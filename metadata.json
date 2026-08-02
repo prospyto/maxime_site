@@ -1,0 +1,6 @@
+{
+  "name": "Ember Sushi",
+  "description": "L'art du sushi, réinventé. Expérience culinaire japonaise moderne et haut de gamme.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

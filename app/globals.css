@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-dark: #0D0D0D;
+    --bg-dark-card: #1A1A1A;
+    --bg-light: #FFFFFF;
+    --bg-gray: #F8F9FA;
+    --primary-orange: #FF5A1F;
+    --primary-orange-hover: #E04A15;
+    
+    --text-white: #FFFFFF;
+    --text-dark: #121212;
+    --text-muted: #8E8E99;
+    --text-muted-light: #A0A0AB;
+    
+    --color-red: #FF3B30;
+    --color-green: #34C759;
+    --color-yellow: #FFCC00;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #FF5A1F;
+}
+
+/* Custom Serif Typography Helper */
+.font-serif-accent {
+  font-family: var(--font-serif), serif;
+}
+
+/* Brush stroke mask for organic transition */
+.brush-divider-svg {
+  filter: drop-shadow(0px -4px 10px rgba(0, 0, 0, 0.4));
+}
+
+/* Custom Glassmorphism for floating bar */
+.glass-tab-bar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.dark-card-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.dark-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(255, 90, 31, 0.15);
+}
+
+.light-card-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.light-card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
