@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Star, Gem, Palette } from 'lucide-react';
+import Reveal from './Reveal';
 
 interface SpecialtiesProps {
   onSelectCategory?: (category: string) => void;
@@ -17,7 +18,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header (on Black background) */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
+        <Reveal className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
           <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-widest bg-[#FF5A1F]/10 px-3.5 py-1.5 rounded-full inline-block border border-[#FF5A1F]/20">
             Menu d&apos;Exception
           </span>
@@ -27,13 +28,14 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
           <p className="text-base text-gray-400 font-normal">
             Produits de haute fraîcheur, préparations faites minute.
           </p>
-        </div>
+        </Reveal>
 
         {/* 4 Cards Grid: Card 1 (White) | Card 2 (White) | Card 3 (Image) | Card 4 (White) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           
           {/* Card 1: White Card (Sushi Signature) */}
-          <div
+          <Reveal
+            delay={0}
             onClick={() => onSelectCategory && onSelectCategory('signature')}
             className="bg-white p-7 sm:p-8 rounded-2xl flex flex-col justify-between text-left border border-gray-100 shadow-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
           >
@@ -53,10 +55,11 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
                 Explorer
               </span>
             </div>
-          </div>
+          </Reveal>
 
           {/* Card 2: White Card (Sashimi Premium) */}
-          <div
+          <Reveal
+            delay={0.1}
             onClick={() => onSelectCategory && onSelectCategory('sashimi')}
             className="bg-white p-7 sm:p-8 rounded-2xl flex flex-col justify-between text-left border border-gray-100 shadow-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
           >
@@ -76,10 +79,10 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
                 Découvrir
               </span>
             </div>
-          </div>
+          </Reveal>
 
           {/* Card 3: Image Card (Bol Sushi) */}
-          <div className="relative group rounded-2xl overflow-hidden border border-gray-200 shadow-2xl min-h-[300px] h-full">
+          <Reveal delay={0.2} className="relative group rounded-2xl overflow-hidden border border-gray-200 shadow-2xl min-h-[300px] h-full">
             <Image
               src="/images/sushi_bowl.webp"
               alt="Bol de sushi et sashimi frais"
@@ -88,10 +91,11 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               referrerPolicy="no-referrer"
             />
-          </div>
+          </Reveal>
 
           {/* Card 4: White Card (Rolls Créatifs) */}
-          <div
+          <Reveal
+            delay={0.3}
             onClick={() => onSelectCategory && onSelectCategory('rolls')}
             className="bg-white p-7 sm:p-8 rounded-2xl flex flex-col justify-between text-left border border-gray-100 shadow-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
           >
@@ -111,7 +115,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
                 Découvrir
               </span>
             </div>
-          </div>
+          </Reveal>
 
         </div>
       </div>

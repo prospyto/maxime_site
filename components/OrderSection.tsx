@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { CalendarCheck, ShoppingBag } from 'lucide-react';
+import Reveal from './Reveal';
 
 interface OrderSectionProps {
   onOpenOrderModal: () => void;
@@ -33,7 +34,7 @@ export default function OrderSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Text Content */}
-        <div className="max-w-2xl space-y-6 text-center lg:text-left mx-auto lg:mx-0">
+        <Reveal className="max-w-2xl space-y-6 text-center lg:text-left mx-auto lg:mx-0">
             <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-widest bg-[#FF5A1F]/10 px-3.5 py-1.5 rounded-full inline-block border border-[#FF5A1F]/20">
               Service Sur-Mesure
             </span>
@@ -66,7 +67,7 @@ export default function OrderSection({
                 <span>Réserver une table</span>
               </button>
             </div>
-        </div>
+        </Reveal>
 
       </div>
     </section>

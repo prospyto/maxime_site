@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { MapPin, Phone, Mail, Clock, ShoppingBag, Send } from 'lucide-react';
+import Reveal from './Reveal';
 
 interface ContactMenuSectionProps {
   onOpenOrderModal: () => void;
@@ -18,7 +19,7 @@ export default function ContactMenuSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <Reveal className="text-center max-w-2xl mx-auto mb-16 space-y-3">
           <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-widest bg-[#FF5A1F]/10 px-3.5 py-1.5 rounded-full inline-block">
             Information & Dégustation
           </span>
@@ -28,13 +29,13 @@ export default function ContactMenuSection({
           <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed">
             Une question, une réservation de groupe, un événement privé ? Notre équipe dévouée vous répond immédiatement.
           </p>
-        </div>
+        </Reveal>
 
         {/* 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
           {/* Left Column: Image + Features List */}
-          <div className="lg:col-span-6 bg-[#F8F9FA] p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm space-y-6">
+          <Reveal direction="left" className="lg:col-span-6 bg-[#F8F9FA] p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm space-y-6">
             <div className="relative h-64 sm:h-72 w-full rounded-xl overflow-hidden shadow-md">
               <Image
                 src="/images/black_plate_leaf.webp"
@@ -72,10 +73,10 @@ export default function ContactMenuSection({
                 <span><strong className="text-gray-900">Click & Collect :</strong> Prêt en 15 minutes</span>
               </li>
             </ul>
-          </div>
+          </Reveal>
 
           {/* Right Column: Menu Populaire Block */}
-          <div className="lg:col-span-6 bg-[#F8F9FA] p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
+          <Reveal direction="right" delay={0.1} className="lg:col-span-6 bg-[#F8F9FA] p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
                 <h3 className="text-2xl font-extrabold text-gray-900">Menu Populaire</h3>
@@ -126,12 +127,12 @@ export default function ContactMenuSection({
                 </li>
               </ul>
             </div>
-          </div>
+          </Reveal>
 
         </div>
 
         {/* Final Action Buttons */}
-        <div className="mt-16 text-center flex flex-col sm:flex-row items-center justify-center gap-4">
+        <Reveal className="mt-16 text-center flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={onOpenOrderModal}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all duration-300 shadow-lg shadow-[#FF5A1F]/30 hover:-translate-y-0.5"
@@ -149,7 +150,7 @@ export default function ContactMenuSection({
             <Send className="w-4 h-4" />
             <span>Nous contacter</span>
           </button>
-        </div>
+        </Reveal>
 
       </div>
     </section>

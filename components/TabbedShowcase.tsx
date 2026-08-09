@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Star, Plus, Check, ShoppingBag, Flame, Quote, Sparkles } from 'lucide-react';
+import Reveal from './Reveal';
 
 export interface Dish {
   id: string;
@@ -185,17 +186,18 @@ export default function TabbedShowcase({
         {/* TAB 1: Nos Plats Grid */}
         {activeTab === 'plats-signature' && (
           <div className="space-y-8 animate-in fade-in duration-300">
-            <div className="text-center max-w-xl mx-auto mb-8">
+            <Reveal className="text-center max-w-xl mx-auto mb-8">
               <h3 className="text-2xl font-bold text-gray-900">Toutes nos Créations Gourmandes</h3>
               <p className="text-sm text-gray-500 mt-1">Sélectionnez et ajoutez directement à votre panier de dégustation.</p>
-            </div>
+            </Reveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sampleDishes.map((dish) => {
+              {sampleDishes.map((dish, idx) => {
                 const isAdded = addedDishIds.includes(dish.id);
                 return (
-                  <div
+                  <Reveal
                     key={dish.id}
+                    delay={(idx % 3) * 0.08}
                     className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
                   >
                     <div>
@@ -254,7 +256,7 @@ export default function TabbedShowcase({
                         )}
                       </button>
                     </div>
-                  </div>
+                  </Reveal>
                 );
               })}
             </div>
@@ -264,20 +266,21 @@ export default function TabbedShowcase({
         {/* TAB 2: Menu Populaire (Default Active Tab) */}
         {activeTab === 'menu-populaire' && (
           <div className="space-y-8 animate-in fade-in duration-300">
-            <div className="text-center max-w-xl mx-auto mb-6">
+            <Reveal className="text-center max-w-xl mx-auto mb-6">
               <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-wider bg-[#FF5A1F]/10 px-3 py-1 rounded-full inline-block">
                 Incontournables
               </span>
               <h3 className="text-2xl font-bold text-gray-900 mt-2">Les Incontournables d&apos;Ember Sushi</h3>
               <p className="text-sm text-gray-600 mt-1">Plats les plus commandés et plébiscités par nos clients réguliers.</p>
-            </div>
+            </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {sampleDishes.filter((d) => d.popular).map((dish) => {
+              {sampleDishes.filter((d) => d.popular).map((dish, idx) => {
                 const isAdded = addedDishIds.includes(dish.id);
                 return (
-                  <div
+                  <Reveal
                     key={dish.id}
+                    delay={(idx % 2) * 0.1}
                     className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-5 items-center group"
                   >
                     <div
@@ -328,7 +331,7 @@ export default function TabbedShowcase({
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </Reveal>
                 );
               })}
             </div>
@@ -338,18 +341,19 @@ export default function TabbedShowcase({
         {/* TAB 3: Avis Clients */}
         {activeTab === 'avis-clients' && (
           <div className="space-y-8 animate-in fade-in duration-300">
-            <div className="text-center max-w-xl mx-auto mb-6">
+            <Reveal className="text-center max-w-xl mx-auto mb-6">
               <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-wider bg-[#FF5A1F]/10 px-3 py-1 rounded-full inline-block">
                 Expériences Reçues
               </span>
               <h3 className="text-2xl font-bold text-gray-900 mt-2">Ce que disent nos Gourmets</h3>
               <p className="text-sm text-gray-600 mt-1">Note moyenne de 4.9/5 sur plus de 1,200 avis vérifiés.</p>
-            </div>
+            </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {customerReviews.map((review) => (
-                <div
+              {customerReviews.map((review, idx) => (
+                <Reveal
                   key={review.id}
+                  delay={idx * 0.1}
                   className="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between relative"
                 >
                   <Quote className="w-10 h-10 text-[#FF5A1F]/15 absolute top-6 right-6" />
@@ -375,7 +379,7 @@ export default function TabbedShowcase({
                       <p className="text-xs text-gray-500">{review.role} • {review.date}</p>
                     </div>
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>

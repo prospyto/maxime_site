@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface HeroProps {
   onOpenReservation: () => void;
@@ -29,20 +29,35 @@ export default function Hero({ onOpenReservation }: HeroProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="max-w-xl text-left space-y-6 sm:space-y-8">
           {/* Main Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-md">
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-md"
+          >
             Une Expérience Sushi <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-100 to-[#FF5A1F]">
               Moderne & Authentique
             </span>
-          </h1>
+          </motion.h1>
 
           {/* Subtitle Description */}
-          <p className="text-base sm:text-lg text-gray-200 leading-relaxed font-normal drop-shadow-md">
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="text-base sm:text-lg text-gray-200 leading-relaxed font-normal drop-shadow-md"
+          >
             Chez <strong className="text-white font-semibold">Ember Sushi</strong>, chaque pièce est façonnée à la main avec des produits frais d&apos;exception. Une gastronomie japonaise raffinée et créative.
-          </p>
+          </motion.p>
 
           {/* Single Action Button: Découvrir */}
-          <div className="pt-2">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="pt-2"
+          >
             <a
               href="#specialites"
               className="inline-flex items-center gap-3 px-8 py-4 text-base font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all duration-300 shadow-xl shadow-[#FF5A1F]/40 hover:shadow-[#FF5A1F]/60 hover:-translate-y-0.5"
@@ -50,7 +65,7 @@ export default function Hero({ onOpenReservation }: HeroProps) {
             >
               <span>Découvrir</span>
             </a>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
