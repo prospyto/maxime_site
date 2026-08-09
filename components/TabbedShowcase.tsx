@@ -81,7 +81,7 @@ export const sampleDishes: Dish[] = [
     priceFormatted: '7 500 FCFA',
     description: 'Crevette tempura croustillante, surmonté d’avocat fondant et saumon flambé à la sauce unagi.',
     pieces: '8 pièces',
-    image: '/images/black_plate_leaf.png',
+    image: '/images/black_plate_leaf.webp',
     rating: 4.9,
     spicy: true,
   },
