@@ -18,10 +18,10 @@ export default function OrderSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top 2-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">
           
           {/* Left Text */}
-          <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+          <div className="lg:col-span-6 flex flex-col justify-center space-y-6 text-center lg:text-left">
             <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-widest bg-[#FF5A1F]/10 px-3.5 py-1.5 rounded-full inline-block border border-[#FF5A1F]/20">
               Service Sur-Mesure
             </span>
@@ -56,9 +56,9 @@ export default function OrderSection({
             </div>
           </div>
 
-          {/* Right Image (Portrait mode) */}
+          {/* Right Image (Fills full column, no width cap) */}
           <div className="lg:col-span-6 flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
+            <div className="relative w-full aspect-[3/4] lg:aspect-auto lg:h-full lg:min-h-[420px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
               <Image
                 src="/images/sushi_diagonal.webp"
                 alt="Plat de sushi avec baguettes en diagonale"
