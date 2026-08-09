@@ -14,14 +14,26 @@ export default function OrderSection({
   onOpenReservationModal,
 }: OrderSectionProps) {
   return (
-    <section id="commander" className="py-20 lg:py-28 bg-[#0D0D0D] text-white relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="commander" className="relative py-20 lg:py-28 text-white overflow-hidden">
+      {/* Full-section background image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/sushi_diagonal.webp"
+          alt="Plat de sushi avec baguettes en diagonale"
+          fill
+          className="object-cover"
+          style={{ objectPosition: '65% center' }}
+          sizes="100vw"
+          referrerPolicy="no-referrer"
+        />
+        {/* Dark gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0D0D0D] via-[#0D0D0D]/85 to-[#0D0D0D]/40" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Top 2-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-stretch">
-          
-          {/* Left Text */}
-          <div className="lg:col-span-6 flex flex-col justify-center space-y-6 text-center lg:text-left">
+        {/* Text Content */}
+        <div className="max-w-2xl space-y-6 text-center lg:text-left mx-auto lg:mx-0">
             <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-widest bg-[#FF5A1F]/10 px-3.5 py-1.5 rounded-full inline-block border border-[#FF5A1F]/20">
               Service Sur-Mesure
             </span>
@@ -54,23 +66,6 @@ export default function OrderSection({
                 <span>Réserver une table</span>
               </button>
             </div>
-          </div>
-
-          {/* Right Image (Fills full column, no width cap) */}
-          <div className="lg:col-span-6 flex justify-center lg:justify-end">
-            <div className="relative w-full aspect-[3/4] lg:aspect-auto lg:h-full lg:min-h-[420px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
-              <Image
-                src="/images/sushi_diagonal.webp"
-                alt="Plat de sushi avec baguettes en diagonale"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
-                style={{ objectPosition: '65% center' }}
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-          </div>
-
         </div>
 
       </div>
