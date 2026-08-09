@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Calendar, Clock, Users, User, Phone, CheckCircle, Sparkles, Flame } from 'lucide-react';
+import { X, Calendar, Clock, Users, User, Phone, CheckCircle, Flame } from 'lucide-react';
 
 interface ReservationModalProps {
   isOpen: boolean;
@@ -84,7 +84,7 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
                   <select
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-[#FF5A1F] transition-colors"
+                    className="w-full bg-[#1A1A1A] border border-[#FF5A1F] rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-[#FF5A1F] transition-colors"
                   >
                     <option value="12:00">12:00 - Déjeuner</option>
                     <option value="13:00">13:00 - Déjeuner</option>
@@ -169,7 +169,6 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
                 type="submit"
                 className="w-full mt-2 py-3.5 px-6 rounded-full bg-[#FF5A1F] hover:bg-[#E04A15] text-white font-bold text-sm shadow-lg shadow-[#FF5A1F]/30 transition-all flex items-center justify-center gap-2"
               >
-                <Sparkles className="w-4 h-4" />
                 <span>Confirmer ma Réservation</span>
               </button>
             </form>
