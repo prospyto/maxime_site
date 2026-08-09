@@ -81,7 +81,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
           {/* Card 3: Image Card (Bol Sushi) */}
           <div className="relative group rounded-2xl overflow-hidden border border-gray-200 shadow-2xl min-h-[300px] h-full">
             <Image
-              src="/images/sushi_bowl.jpg"
+              src="/images/sushi_bowl.webp"
               alt="Bol de sushi et sashimi frais"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"

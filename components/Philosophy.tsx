@@ -31,7 +31,7 @@ export default function Philosophy() {
           {/* Col 1: Image Sashimi Macro */}
           <div className="relative group rounded-2xl overflow-hidden border border-gray-200 shadow-2xl h-72 sm:h-auto min-h-[280px]">
             <Image
-              src="/images/sashimi_macro.jpg"
+              src="/images/sashimi_macro.webp"
               alt="Sashimi en gros plan"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -65,7 +65,7 @@ export default function Philosophy() {
           {/* Col 4: Image Sushi Rolls Macro */}
           <div className="relative group rounded-2xl overflow-hidden border border-gray-200 shadow-2xl h-72 sm:h-auto min-h-[280px]">
             <Image
-              src="/images/sushi_rolls_macro.jpg"
+              src="/images/sushi_rolls_macro.webp"
               alt="Sushi rolls en gros plan"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"

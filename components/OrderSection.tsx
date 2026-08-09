@@ -60,7 +60,7 @@ export default function OrderSection({
           <div className="lg:col-span-6 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 shadow-2xl group">
               <Image
-                src="/images/sushi_diagonal.jpg"
+                src="/images/sushi_diagonal.webp"
                 alt="Plat de sushi avec baguettes en diagonale"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"

@@ -37,7 +37,7 @@ export default function ContactMenuSection({
           <div className="lg:col-span-6 bg-[#F8F9FA] p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm space-y-6">
             <div className="relative h-64 sm:h-72 w-full rounded-xl overflow-hidden shadow-md">
               <Image
-                src="/images/black_plate_leaf.jpg"
+                src="/images/black_plate_leaf.png"
                 alt="Sushi sur assiette noire, décoration feuille verte"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-500"

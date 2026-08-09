@@ -14,7 +14,7 @@ export default function Hero({ onOpenReservation }: HeroProps) {
       {/* Background image showing the sushi platter with baked-in white brush border */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/hero_sushi_plate.jpg"
+          src="/images/hero_sushi_plate.webp"
           alt="Ember Sushi Background"
           fill
           priority
