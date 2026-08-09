@@ -64,6 +64,7 @@ export default function OrderSection({
                 alt="Plat de sushi avec baguettes en diagonale"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
+                style={{ objectPosition: '65% center' }}
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 referrerPolicy="no-referrer"
               />
