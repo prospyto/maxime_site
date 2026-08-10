@@ -56,8 +56,8 @@ export default function OrderCartDrawer({
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-[#121212] text-white shadow-2xl flex flex-col justify-between border-l border-white/10">
+      <div className="absolute inset-y-0 right-0 w-full max-w-full flex pl-0 sm:pl-10">
+        <div className="w-full sm:w-screen sm:max-w-md bg-[#121212] text-white shadow-2xl flex flex-col justify-between border-l border-white/10 h-full">
           
           {/* Header */}
           <div className="p-5 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
@@ -255,7 +255,7 @@ export default function OrderCartDrawer({
 
               <button
                 onClick={handleCheckout}
-                className="w-full py-3.5 px-6 rounded-full bg-[#FF5A1F] hover:bg-[#E04A15] text-white font-bold text-sm shadow-lg shadow-[#FF5A1F]/30 transition-all flex items-center justify-center gap-2"
+                className="btn-shine w-full py-3.5 px-6 rounded-full bg-[#FF5A1F] hover:bg-[#E04A15] text-white font-bold text-sm shadow-lg shadow-[#FF5A1F]/30 transition-all flex items-center justify-center gap-2"
               >
                 <span>Commander ({total.toLocaleString()} FCFA)</span>
               </button>

@@ -35,35 +35,35 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-[#121212] text-white w-full max-w-lg rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="bg-[#121212] text-white w-full max-w-lg max-h-[92vh] rounded-3xl border border-white/10 shadow-2xl overflow-hidden relative flex flex-col">
         
         {/* Header */}
-        <div className="px-6 py-5 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-[#FF5A1F]/20 flex items-center justify-center text-[#FF5A1F]">
+        <div className="px-5 sm:px-6 py-4 sm:py-5 border-b border-white/10 flex items-center justify-between bg-white/[0.02] shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-full bg-[#FF5A1F]/20 flex items-center justify-center text-[#FF5A1F] shrink-0">
               <Flame className="w-5 h-5 fill-[#FF5A1F]/30" />
             </div>
-            <div>
-              <h3 className="text-lg font-bold text-white">Réserver une Table</h3>
-              <p className="text-xs text-gray-400">Ember Sushi • Confirmation immédiate</p>
+            <div className="min-w-0">
+              <h3 className="text-base sm:text-lg font-bold text-white truncate">Réserver une Table</h3>
+              <p className="text-xs text-gray-400 truncate">Ember Sushi • Confirmation immédiate</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content Body */}
-        <div className="p-6">
+        <div className="p-5 sm:p-6 overflow-y-auto">
           {step === 'form' ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               
               {/* Date & Time Grid */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-gray-300 mb-1.5 flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-[#FF5A1F]" /> Date
@@ -101,19 +101,19 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
                 <label className="block text-xs font-bold text-gray-300 mb-1.5 flex items-center gap-1.5">
                   <Users className="w-3.5 h-3.5 text-[#FF5A1F]" /> Nombre de Couverts
                 </label>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-3 xs:grid-cols-5 sm:grid-cols-5 gap-2">
                   {['1', '2', '4', '6', '8+'].map((num) => (
                     <button
                       type="button"
                       key={num}
                       onClick={() => setFormData({ ...formData, guests: num })}
-                      className={`py-2 text-xs font-bold rounded-xl border transition-all ${
+                      className={`py-2 px-1 text-xs font-bold rounded-xl border transition-all whitespace-nowrap ${
                         formData.guests === num
                           ? 'bg-[#FF5A1F] text-white border-[#FF5A1F]'
                           : 'bg-[#1A1A1A] text-gray-300 border-white/10 hover:border-white/30'
                       }`}
                     >
-                      {num} {num === '1' ? 'pers.' : 'pers.'}
+                      {num} pers.
                     </button>
                   ))}
                 </div>
@@ -167,7 +167,7 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
               {/* Submit CTA */}
               <button
                 type="submit"
-                className="w-full mt-2 py-3.5 px-6 rounded-full bg-[#FF5A1F] hover:bg-[#E04A15] text-white font-bold text-sm shadow-lg shadow-[#FF5A1F]/30 transition-all flex items-center justify-center gap-2"
+                className="btn-shine w-full mt-2 py-3.5 px-6 rounded-full bg-[#FF5A1F] hover:bg-[#E04A15] text-white font-bold text-sm shadow-lg shadow-[#FF5A1F]/30 transition-all flex items-center justify-center gap-2"
               >
                 <span>Confirmer ma Réservation</span>
               </button>

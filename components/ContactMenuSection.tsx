@@ -135,7 +135,7 @@ export default function ContactMenuSection({
         <Reveal className="mt-16 text-center flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={onOpenOrderModal}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all duration-300 shadow-lg shadow-[#FF5A1F]/30 hover:-translate-y-0.5"
+            className="btn-shine w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all duration-300 shadow-lg shadow-[#FF5A1F]/30 hover:-translate-y-0.5"
             id="btn-contact-see-menu"
           >
             <ShoppingBag className="w-5 h-5" />

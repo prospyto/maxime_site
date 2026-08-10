@@ -113,7 +113,7 @@ export default function Navbar({ onOpenReservation, onOpenCart, cartCount }: Nav
             {/* Main Reservation CTA Button */}
             <button
               onClick={onOpenReservation}
-              className="hidden sm:inline-flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all duration-200 shadow-lg shadow-[#FF5A1F]/25 hover:shadow-[#FF5A1F]/40 hover:-translate-y-0.5 active:translate-y-0"
+              className="btn-shine hidden sm:inline-flex items-center gap-2 px-6 py-2.5 text-sm font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all duration-200 shadow-lg shadow-[#FF5A1F]/25 hover:shadow-[#FF5A1F]/40 hover:-translate-y-0.5 active:translate-y-0"
               id="btn-nav-reserve"
             >
               <Calendar className="w-4 h-4" />
