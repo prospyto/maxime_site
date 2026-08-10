@@ -89,7 +89,7 @@
     transparent 100%
   );
   transform: skewX(-20deg);
-  animation: btn-shine-sweep 1.3s ease-in-out infinite;
+  animation: btn-shine-sweep 1.8s ease-in-out infinite;
   pointer-events: none;
 }
 @keyframes btn-shine-sweep {
