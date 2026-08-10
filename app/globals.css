@@ -109,3 +109,19 @@
     display: none;
   }
 }
+
+/* Splash screen: 4 rings spinning in alternating directions */
+@keyframes spin-cw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-ccw {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+.spin-cw {
+  animation: spin-cw 1.4s linear infinite;
+}
+.spin-ccw {
+  animation: spin-ccw 1.4s linear infinite;
+}
