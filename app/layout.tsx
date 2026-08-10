@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Playfair_Display } from 'next/font/google';
 import './globals.css';
+import ConnectionWatcher from '../components/ConnectionWatcher';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -27,6 +28,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${plusJakartaSans.variable} ${playfairDisplay.variable} scroll-smooth`}>
       <body className="bg-[#0D0D0D] text-white font-sans antialiased selection:bg-[#FF5A1F] selection:text-white" suppressHydrationWarning>
+        <ConnectionWatcher />
         {children}
       </body>
     </html>
