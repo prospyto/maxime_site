@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Calendar, Clock, Users, User, Phone, CheckCircle, Flame } from 'lucide-react';
+import { useAntiBot } from '../hooks/useAntiBot';
 
 interface ReservationModalProps {
   isOpen: boolean;
@@ -19,11 +20,22 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
     notes: '',
   });
   const [bookingCode, setBookingCode] = useState('');
+  const { honeypotProps, isLikelyBot, reset: resetAntiBot } = useAntiBot(2);
+
+  useEffect(() => {
+    if (isOpen) resetAntiBot();
+  }, [isOpen, resetAntiBot]);
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLikelyBot()) {
+      // Silently pretend it worked so bots don't retry with different tactics —
+      // no real reservation is created, and no error hints at the detection.
+      setStep('success');
+      return;
+    }
     const randomCode = 'EMB-' + Math.floor(1000 + Math.random() * 9000);
     setBookingCode(randomCode);
     setStep('success');
@@ -61,6 +73,8 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
         <div className="p-5 sm:p-6 overflow-y-auto">
           {step === 'form' ? (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Honeypot field: invisible to humans, tempting to bots. Do not remove. */}
+              <input type="text" {...honeypotProps} />
               
               {/* Date & Time Grid */}
               <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-4">

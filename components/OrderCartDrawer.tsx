@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { X, Trash2, Plus, Minus, ShoppingBag, Truck, Store, CheckCircle, ArrowRight } from 'lucide-react';
 import { Dish } from './TabbedShowcase';
+import { useAntiBot } from '../hooks/useAntiBot';
 
 export interface CartItem {
   dish: Dish;
@@ -31,6 +32,11 @@ export default function OrderCartDrawer({
   const [address, setAddress] = useState('');
   const [isOrdered, setIsOrdered] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
+  const { honeypotProps, isLikelyBot, reset: resetAntiBot } = useAntiBot(2);
+
+  useEffect(() => {
+    if (isOpen) resetAntiBot();
+  }, [isOpen, resetAntiBot]);
 
   if (!isOpen) return null;
 
@@ -43,6 +49,14 @@ export default function OrderCartDrawer({
 
   const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLikelyBot()) {
+      // Silently pretend it worked so bots don't retry — no real order is
+      // created, and no error hints at the detection.
+      const fakeNum = 'ORD-' + Math.floor(10000 + Math.random() * 90000);
+      setOrderNumber(fakeNum);
+      setIsOrdered(true);
+      return;
+    }
     const num = 'ORD-' + Math.floor(10000 + Math.random() * 90000);
     setOrderNumber(num);
     setIsOrdered(true);
@@ -228,6 +242,9 @@ export default function OrderCartDrawer({
                       className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5A1F]"
                     />
                   )}
+
+                  {/* Honeypot field: invisible to humans, tempting to bots. Do not remove. */}
+                  <input type="text" {...honeypotProps} />
                 </div>
               </div>
             )}
