@@ -23,6 +23,7 @@ interface TabbedShowcaseProps {
   onAddToCart: (dish: Dish) => void;
   onOpenDishDetail: (dish: Dish) => void;
   addedDishIds: string[];
+  forcedTab?: 'plats-signature' | 'menu-populaire' | 'avis-clients';
 }
 
 export const sampleDishes: Dish[] = [
@@ -133,8 +134,14 @@ export default function TabbedShowcase({
   onAddToCart,
   onOpenDishDetail,
   addedDishIds,
+  forcedTab,
 }: TabbedShowcaseProps) {
   const [activeTab, setActiveTab] = useState<'plats-signature' | 'menu-populaire' | 'avis-clients'>('menu-populaire');
+
+  // Quand forcedTab change depuis le parent, on bascule l'onglet
+  React.useEffect(() => {
+    if (forcedTab) setActiveTab(forcedTab);
+  }, [forcedTab]);
 
   return (
     <div id="nos-plats" className="relative bg-[#F8F9FA] text-gray-900 pb-20">

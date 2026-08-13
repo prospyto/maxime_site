@@ -20,6 +20,7 @@ export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [forcedTab, setForcedTab] = useState<'plats-signature' | 'menu-populaire' | 'avis-clients' | undefined>(undefined);
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -93,7 +94,12 @@ export default function Home() {
       <Philosophy />
 
       {/* Specialties Section (Dark background) */}
-      <Specialties onSelectCategory={() => setIsCartOpen(true)} />
+      <Specialties onSelectCategory={() => {
+        setForcedTab('plats-signature');
+        setTimeout(() => {
+          document.getElementById('nos-plats')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }} />
 
       {/* Order CTA Section (Dark background) */}
       <OrderSection
@@ -106,6 +112,7 @@ export default function Home() {
         onAddToCart={(dish) => handleAddToCart(dish, 1)}
         onOpenDishDetail={(dish) => setSelectedDish(dish)}
         addedDishIds={addedDishIds}
+        forcedTab={forcedTab}
       />
 
       {/* Contact & Popular Menu Section (White background) */}
