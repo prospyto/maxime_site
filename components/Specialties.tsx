@@ -13,15 +13,17 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
 
   const goToPlats = (category: string) => {
     onSelectCategory && onSelectCategory(category);
-    const section = document.getElementById('nos-plats');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      // Cliquer sur l'onglet "Nos Plats" après le scroll
-      setTimeout(() => {
-        const btn = document.getElementById('tab-btn-plats');
-        btn && btn.click();
-      }, 400);
-    }
+
+    // D'abord activer l'onglet, PUIS scroller
+    const btn = document.getElementById('tab-btn-plats');
+    btn && btn.click();
+
+    setTimeout(() => {
+      const section = document.getElementById('nos-plats');
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 50);
   };
   return (
     <section id="specialites" className="relative py-16 lg:py-24 overflow-hidden">
