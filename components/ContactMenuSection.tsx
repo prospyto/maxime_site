@@ -8,11 +8,13 @@ import Reveal from './Reveal';
 interface ContactMenuSectionProps {
   onOpenOrderModal: () => void;
   onOpenReservationModal: () => void;
+  onGoToMenu: (tab: 'plats-signature' | 'menu-populaire') => void;
 }
 
 export default function ContactMenuSection({
   onOpenOrderModal,
   onOpenReservationModal,
+  onGoToMenu,
 }: ContactMenuSectionProps) {
   return (
     <section id="contact" className="py-20 lg:py-28 bg-white text-gray-900 relative z-10">
@@ -87,42 +89,42 @@ export default function ContactMenuSection({
 
               <ul className="divide-y divide-dashed divide-gray-300">
                 <li className="py-4 flex items-center justify-between font-semibold text-sm sm:text-base">
-                  <span className="flex items-center gap-3 text-gray-900">
-                    <span className="w-3 h-3 rounded-full bg-[#FF3B30]" />
+                  <button onClick={() => onGoToMenu('menu-populaire')} className="flex items-center gap-3 text-gray-900 hover:text-[#FF5A1F] transition-colors text-left">
+                    <span className="w-3 h-3 rounded-full bg-[#FF3B30] shrink-0" />
                     <span>Saumon Nigiri (6 pièces)</span>
-                  </span>
+                  </button>
                   <span className="font-extrabold text-[#FF5A1F]">4 500 FCFA</span>
                 </li>
 
                 <li className="py-4 flex items-center justify-between font-semibold text-sm sm:text-base">
-                  <span className="flex items-center gap-3 text-gray-900">
-                    <span className="w-3 h-3 rounded-full bg-[#FF5A1F]" />
+                  <button onClick={() => onGoToMenu('menu-populaire')} className="flex items-center gap-3 text-gray-900 hover:text-[#FF5A1F] transition-colors text-left">
+                    <span className="w-3 h-3 rounded-full bg-[#FF5A1F] shrink-0" />
                     <span>California Roll Signature</span>
-                  </span>
+                  </button>
                   <span className="font-extrabold text-[#FF5A1F]">5 000 FCFA</span>
                 </li>
 
                 <li className="py-4 flex items-center justify-between font-semibold text-sm sm:text-base">
-                  <span className="flex items-center gap-3 text-gray-900">
-                    <span className="w-3 h-3 rounded-full bg-[#FF3B30]" />
+                  <button onClick={() => onGoToMenu('plats-signature')} className="flex items-center gap-3 text-gray-900 hover:text-[#FF5A1F] transition-colors text-left">
+                    <span className="w-3 h-3 rounded-full bg-[#FF3B30] shrink-0" />
                     <span>Plateau Découverte (12 pièces)</span>
-                  </span>
+                  </button>
                   <span className="font-extrabold text-[#FF5A1F]">9 500 FCFA</span>
                 </li>
 
                 <li className="py-4 flex items-center justify-between font-semibold text-sm sm:text-base">
-                  <span className="flex items-center gap-3 text-gray-900">
-                    <span className="w-3 h-3 rounded-full bg-[#FF3B30]" />
+                  <button onClick={() => onGoToMenu('menu-populaire')} className="flex items-center gap-3 text-gray-900 hover:text-[#FF5A1F] transition-colors text-left">
+                    <span className="w-3 h-3 rounded-full bg-[#FF3B30] shrink-0" />
                     <span>Sashimi Premium (8 pièces)</span>
-                  </span>
+                  </button>
                   <span className="font-extrabold text-[#FF5A1F]">6 000 FCFA</span>
                 </li>
 
                 <li className="py-4 flex items-center justify-between font-semibold text-sm sm:text-base">
-                  <span className="flex items-center gap-3 text-gray-900">
-                    <span className="w-3 h-3 rounded-full bg-[#FFCC00]" />
+                  <button onClick={() => onGoToMenu('plats-signature')} className="flex items-center gap-3 text-gray-900 hover:text-[#FF5A1F] transition-colors text-left">
+                    <span className="w-3 h-3 rounded-full bg-[#FFCC00] shrink-0" />
                     <span>Dragon Roll Flambé (8 pièces)</span>
-                  </span>
+                  </button>
                   <span className="font-extrabold text-[#FF5A1F]">7 500 FCFA</span>
                 </li>
               </ul>
@@ -134,7 +136,7 @@ export default function ContactMenuSection({
         {/* Final Action Buttons */}
         <Reveal className="mt-16 text-center flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
-            onClick={onOpenOrderModal}
+            onClick={() => onGoToMenu('plats-signature')}
             className="btn-shine w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all duration-300 shadow-lg shadow-[#FF5A1F]/30 hover:-translate-y-0.5"
             id="btn-contact-see-menu"
           >

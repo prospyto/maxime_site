@@ -119,6 +119,12 @@ export default function Home() {
       <ContactMenuSection
         onOpenOrderModal={() => setIsCartOpen(true)}
         onOpenReservationModal={() => setIsReservationOpen(true)}
+        onGoToMenu={(tab) => {
+          setForcedTab(tab);
+          setTimeout(() => {
+            document.getElementById('nos-plats')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 50);
+        }}
       />
 
       {/* Footer (Dark background) */}
