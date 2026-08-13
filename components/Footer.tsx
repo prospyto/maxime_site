@@ -26,7 +26,7 @@ export default function Footer() {
         {/* Social Icons */}
         <div className="flex items-center justify-center gap-4 mb-12">
           <a
-            href="https://instagram.com"
+            href="https://www.facebook.com/prospere.azonglahoun"
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 rounded-full bg-[#1A1A1A] hover:bg-[#FF5A1F] text-white flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg border border-white/5"
@@ -36,7 +36,7 @@ export default function Footer() {
           </a>
 
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/prospere.azonglahoun"
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 rounded-full bg-[#1A1A1A] hover:bg-[#FF5A1F] text-white flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg border border-white/5"
@@ -46,7 +46,7 @@ export default function Footer() {
           </a>
 
           <a
-            href="https://twitter.com"
+            href="https://www.facebook.com/prospere.azonglahoun"
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 rounded-full bg-[#1A1A1A] hover:bg-[#FF5A1F] text-white flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg border border-white/5"
