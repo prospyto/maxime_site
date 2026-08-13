@@ -77,30 +77,30 @@
   content: '';
   position: absolute;
   top: 0;
-  left: -75%;
-  width: 50%;
+  left: -100%;
+  width: 70%;
   height: 100%;
   background: linear-gradient(
     115deg,
     transparent 0%,
-    rgba(255, 255, 255, 0) 30%,
-    rgba(255, 255, 255, 0.55) 50%,
-    rgba(255, 255, 255, 0) 70%,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.75) 50%,
+    rgba(255, 255, 255, 0) 80%,
     transparent 100%
   );
   transform: skewX(-20deg);
-  animation: btn-shine-sweep 1.8s ease-in-out infinite;
+  animation: btn-shine-sweep 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   pointer-events: none;
 }
 @keyframes btn-shine-sweep {
   0% {
-    left: -75%;
+    left: -100%;
   }
-  25% {
-    left: 125%;
+  40% {
+    left: 130%;
   }
   100% {
-    left: 125%;
+    left: 130%;
   }
 }
 @media (prefers-reduced-motion: reduce) {
