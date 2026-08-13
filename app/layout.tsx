@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Playfair_Display } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import ConnectionWatcher from '../components/ConnectionWatcher';
 import InitialLoader from '../components/InitialLoader';
@@ -39,6 +40,19 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${plusJakartaSans.variable} ${playfairDisplay.variable} scroll-smooth`}>
       <body className="bg-[#0D0D0D] text-white font-sans antialiased selection:bg-[#FF5A1F] selection:text-white" suppressHydrationWarning>
+        {/* Google Analytics 4 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-M4C6KTXEP5"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-M4C6KTXEP5');
+          `}
+        </Script>
         <InitialLoader />
         <ConnectionWatcher />
         {children}
