@@ -10,6 +10,19 @@ interface SpecialtiesProps {
 }
 
 export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
+
+  const goToPlats = (category: string) => {
+    onSelectCategory && onSelectCategory(category);
+    const section = document.getElementById('nos-plats');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Cliquer sur l'onglet "Nos Plats" après le scroll
+      setTimeout(() => {
+        const btn = document.getElementById('tab-btn-plats');
+        btn && btn.click();
+      }, 400);
+    }
+  };
   return (
     <section id="specialites" className="relative py-16 lg:py-24 overflow-hidden">
       {/* Background split: Top half dark black (#0D0D0D) with header, bottom half white behind lower part of cards */}
@@ -36,7 +49,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
           {/* Card 1: White Card (Sushi Signature) */}
           <Reveal
             delay={0}
-            onClick={() => onSelectCategory && onSelectCategory('signature')}
+            onClick={() => goToPlats('signature')}
             className="bg-white p-7 sm:p-8 rounded-2xl flex flex-col justify-between text-left border border-gray-100 shadow-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
           >
             <div>
@@ -60,7 +73,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
           {/* Card 2: White Card (Sashimi Premium) */}
           <Reveal
             delay={0.1}
-            onClick={() => onSelectCategory && onSelectCategory('sashimi')}
+            onClick={() => goToPlats('sashimi')}
             className="bg-white p-7 sm:p-8 rounded-2xl flex flex-col justify-between text-left border border-gray-100 shadow-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
           >
             <div>
@@ -96,7 +109,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
           {/* Card 4: White Card (Rolls Créatifs) */}
           <Reveal
             delay={0.3}
-            onClick={() => onSelectCategory && onSelectCategory('rolls')}
+            onClick={() => goToPlats('rolls')}
             className="bg-white p-7 sm:p-8 rounded-2xl flex flex-col justify-between text-left border border-gray-100 shadow-2xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
           >
             <div>

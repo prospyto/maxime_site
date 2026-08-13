@@ -137,7 +137,7 @@ export default function TabbedShowcase({
   const [activeTab, setActiveTab] = useState<'plats-signature' | 'menu-populaire' | 'avis-clients'>('menu-populaire');
 
   return (
-    <div className="relative bg-[#F8F9FA] text-gray-900 pb-20">
+    <div id="nos-plats" className="relative bg-[#F8F9FA] text-gray-900 pb-20">
       
       {/* Floating Segmented Pill Container (-translate-y-1/2 overlapping sections) */}
       <div className="relative z-30 max-w-2xl mx-auto px-4 -translate-y-1/2">
