@@ -20,7 +20,7 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
     notes: '',
   });
   const [bookingCode, setBookingCode] = useState('');
-  const { honeypotProps, isLikelyBot, reset: resetAntiBot } = useAntiBot(2);
+  const { honeypotProps, isLikelyBot, reset: resetAntiBot } = useAntiBot(0.5);
 
   useEffect(() => {
     if (isOpen) resetAntiBot();
@@ -31,6 +31,7 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLikelyBot()) {
+      // Bot détecté — succès silencieux
       setStep('success');
       return;
     }
@@ -39,7 +40,7 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
 
     // Envoyer au Google Sheet
     try {
-      await fetch('/api/submit', {
+      const res = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -55,7 +56,11 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
           },
         }),
       });
-    } catch { /* silencieux */ }
+      const json = await res.json();
+      console.log('[ReservationModal] Google Sheet response:', json);
+    } catch (err) {
+      console.error('[ReservationModal] Erreur envoi:', err);
+    }
 
     setStep('success');
   };

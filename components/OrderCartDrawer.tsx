@@ -32,7 +32,7 @@ export default function OrderCartDrawer({
   const [address, setAddress] = useState('');
   const [isOrdered, setIsOrdered] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
-  const { honeypotProps, isLikelyBot, reset: resetAntiBot } = useAntiBot(2);
+  const { honeypotProps, isLikelyBot, reset: resetAntiBot } = useAntiBot(0.5);
 
   useEffect(() => {
     if (isOpen) resetAntiBot();
