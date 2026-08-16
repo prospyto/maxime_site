@@ -6,18 +6,28 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    // Google Apps Script accepte mieux les données en form-urlencoded
+    // Google Apps Script nécessite que les données soient dans e.parameter
+    // On envoie en multipart/form-data avec le champ "data"
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(body));
+
     const res = await fetch(SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ data: JSON.stringify(body) }).toString(),
+      body: formData,
       redirect: 'follow',
     });
 
     const text = await res.text();
-    return NextResponse.json({ success: true, raw: text });
+    console.log('[API/submit] Script response:', text);
+    
+    try {
+      const json = JSON.parse(text);
+      return NextResponse.json(json);
+    } catch {
+      return NextResponse.json({ success: true, raw: text });
+    }
   } catch (err) {
-    console.error('Google Sheet error:', err);
+    console.error('[API/submit] Erreur:', err);
     return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
   }
 }
