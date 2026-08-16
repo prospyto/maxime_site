@@ -64,9 +64,44 @@ function doPost(e) {
   }
 }
 
-// Utile pour tester rapidement que le déploiement répond bien
-function doGet() {
-  return ContentService
-    .createTextOutput(JSON.stringify({ status: 'Ember Sushi script actif' }))
-    .setMimeType(ContentService.MimeType.JSON);
+// GET ?type=Reservations|Commandes -> renvoie les lignes en JSON
+// GET (sans paramètres) -> ping de statut
+function doGet(e) {
+  const type = e.parameter && e.parameter.type;
+
+  if (!type) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'Ember Sushi script actif' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  try {
+    if (!SCHEMAS[type]) throw new Error('Type inconnu : ' + type);
+
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName(type);
+
+    if (!sheet || sheet.getLastRow() < 2) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ success: true, data: [] }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const values = sheet.getDataRange().getValues();
+    const headers = values[0];
+    const rows = values.slice(1).map(row => {
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = row[i]; });
+      return obj;
+    });
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: true, data: rows }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: false, error: String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }

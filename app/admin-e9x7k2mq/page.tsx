@@ -149,48 +149,33 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<string>('');
 
-  const SHEET_URL = `https://docs.google.com/spreadsheets/d/1MboU5YZU2Qg1MNxA-nean5VOL5b2P0dCu3pMGtGSWLc/gviz/tq?tqx=out:json&sheet=`;
-
-  const parseSheetData = useCallback((raw: string) => {
-    const json = JSON.parse(raw.replace(/^[^{]*/, '').replace(/[^}]*$/, ''));
-    const rows = json.table?.rows || [];
-    const cols = json.table?.cols?.map((c: { label: string }) => c.label) || [];
-    return rows.map((row: { c: Array<{ v: string | null }> }) => {
-      const obj: Record<string, string> = {};
-      row.c?.forEach((cell, i) => {
-        if (cols[i]) obj[cols[i]] = cell?.v ?? '';
-      });
-      return obj;
-    });
-  }, []);
-
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [resRes, cmdRes] = await Promise.all([
-        fetch(`${SHEET_URL}Reservations`),
-        fetch(`${SHEET_URL}Commandes`),
+        fetch('/api/admin-data?type=Reservations'),
+        fetch('/api/admin-data?type=Commandes'),
       ]);
 
       if (resRes.ok) {
-        const text = await resRes.text();
-        const data = parseSheetData(text) as Reservation[];
-        setReservations(data.reverse());
+        const json = await resRes.json();
+        const data = (json.data || []) as Reservation[];
+        setReservations([...data].reverse());
         setStats(s => ({
           ...s,
           totalReservations: data.length,
-          derniereReservation: data[0]?.soumis_le || '-',
+          derniereReservation: data[data.length - 1]?.soumis_le || '-',
         }));
       }
 
       if (cmdRes.ok) {
-        const text = await cmdRes.text();
-        const data = parseSheetData(text) as Commande[];
-        setCommandes(data.reverse());
+        const json = await cmdRes.json();
+        const data = (json.data || []) as Commande[];
+        setCommandes([...data].reverse());
         setStats(s => ({
           ...s,
           totalCommandes: data.length,
-          derniereCommande: data[0]?.soumis_le || '-',
+          derniereCommande: data[data.length - 1]?.soumis_le || '-',
         }));
       }
     } catch {
@@ -198,7 +183,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     }
     setLoading(false);
     setLastRefresh(new Date().toLocaleTimeString('fr-FR'));
-  }, [SHEET_URL, parseSheetData]);
+  }, []);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
