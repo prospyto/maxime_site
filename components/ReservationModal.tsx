@@ -28,16 +28,35 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLikelyBot()) {
-      // Silently pretend it worked so bots don't retry with different tactics —
-      // no real reservation is created, and no error hints at the detection.
       setStep('success');
       return;
     }
     const randomCode = 'EMB-' + Math.floor(1000 + Math.random() * 9000);
     setBookingCode(randomCode);
+
+    // Envoyer au Google Sheet
+    try {
+      await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'Reservations',
+          payload: {
+            date: formData.date,
+            heure: formData.time,
+            couverts: formData.guests,
+            nom: formData.name,
+            telephone: formData.phone,
+            demande: formData.notes || '',
+            soumis_le: new Date().toLocaleString('fr-FR'),
+          },
+        }),
+      });
+    } catch { /* silencieux */ }
+
     setStep('success');
   };
 

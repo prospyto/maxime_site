@@ -47,11 +47,9 @@ export default function OrderCartDrawer({
   const deliveryFee = deliveryType === 'delivery' ? 1000 : 0;
   const total = subtotal + (subtotal > 0 ? deliveryFee : 0);
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLikelyBot()) {
-      // Silently pretend it worked so bots don't retry — no real order is
-      // created, and no error hints at the detection.
       const fakeNum = 'ORD-' + Math.floor(10000 + Math.random() * 90000);
       setOrderNumber(fakeNum);
       setIsOrdered(true);
@@ -59,6 +57,26 @@ export default function OrderCartDrawer({
     }
     const num = 'ORD-' + Math.floor(10000 + Math.random() * 90000);
     setOrderNumber(num);
+
+    // Envoyer au Google Sheet
+    try {
+      await fetch('/api/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'Commandes',
+          payload: {
+            numero: num,
+            type: deliveryType === 'delivery' ? 'Livraison' : 'À emporter',
+            adresse: deliveryType === 'delivery' ? address : '',
+            articles: cartItems.map(i => `${i.dish.name} x${i.quantity}`).join(', '),
+            total: `${total.toLocaleString('fr-FR')} FCFA`,
+            soumis_le: new Date().toLocaleString('fr-FR'),
+          },
+        }),
+      });
+    } catch { /* silencieux */ }
+
     setIsOrdered(true);
   };
 
