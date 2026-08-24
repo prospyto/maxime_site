@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const SCRIPT_URL = process.env.GOOGLE_SHEET_SCRIPT_URL!;
+import { supabase } from '@/lib/supabase';
 
 export async function GET(req: NextRequest) {
   // Protection : seule une session admin valide peut lire les données
@@ -14,13 +13,19 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Type invalide' }, { status: 400 });
   }
 
+  const table = type === 'Reservations' ? 'reservations' : 'commandes';
+
   try {
-    const res = await fetch(`${SCRIPT_URL}?type=${type}`, {
-      redirect: 'follow',
-      cache: 'no-store',
-    });
-    const json = await res.json();
-    return NextResponse.json(json);
+    const { data, error } = await supabase
+      .from(table)
+      .select('*')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, data });
   } catch (err) {
     return NextResponse.json({ success: false, error: String(err) }, { status: 500 });
   }

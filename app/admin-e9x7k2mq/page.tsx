@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Flame, Lock, LogOut, Users, CalendarCheck, ShoppingBag, TrendingUp, RefreshCw, Eye, Clock, MapPin, Phone } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface Reservation {
@@ -186,6 +187,18 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   }, []);
 
   useEffect(() => { fetchData(); }, [fetchData]);
+
+  // Temps réel : rafraîchit automatiquement dès qu'une réservation ou
+  // commande est ajoutée dans Supabase, sans action manuelle.
+  useEffect(() => {
+    const channel = supabase
+      .channel('admin-live-updates')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reservations' }, () => fetchData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'commandes' }, () => fetchData())
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [fetchData]);
 
   const handleLogout = async () => {
     await fetch('/api/admin-auth', { method: 'DELETE' });
