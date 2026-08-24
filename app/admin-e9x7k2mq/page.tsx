@@ -17,6 +17,8 @@ interface Reservation {
 
 interface Commande {
   numero: string;
+  nom: string;
+  telephone: string;
   type: string;
   adresse: string;
   articles: string;
@@ -368,7 +370,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                           <ShoppingBag className="w-4 h-4 text-purple-400" />
                         </div>
                         <div>
-                          <p className="text-white font-semibold text-sm">{c.numero}</p>
+                          <p className="text-white font-semibold text-sm">{c.numero} {c.nom && `· ${c.nom}`}</p>
                           <p className="text-gray-500 text-xs">{c.type} · {c.articles}</p>
                         </div>
                       </div>
@@ -478,6 +480,18 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                           </span>
                         </div>
                         <p className="text-sm text-gray-400">{c.articles}</p>
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
+                          {c.nom && (
+                            <span className="flex items-center gap-1">
+                              <Users className="w-3 h-3" />{c.nom}
+                            </span>
+                          )}
+                          {c.telephone && (
+                            <a href={`tel:${c.telephone}`} className="flex items-center gap-1 hover:text-[#FF5A1F] transition-colors">
+                              <Phone className="w-3 h-3" />{c.telephone}
+                            </a>
+                          )}
+                        </div>
                         {c.adresse && (
                           <p className="text-xs text-gray-600 flex items-center gap-1">
                             <MapPin className="w-3 h-3" />{c.adresse}

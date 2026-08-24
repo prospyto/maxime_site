@@ -29,6 +29,8 @@ export default function OrderCartDrawer({
   onClearCart,
 }: OrderCartDrawerProps) {
   const [deliveryType, setDeliveryType] = useState<'delivery' | 'pickup'>('delivery');
+  const [customerName, setCustomerName] = useState('');
+  const [customerPhone, setCustomerPhone] = useState('');
   const [address, setAddress] = useState('');
   const [isOrdered, setIsOrdered] = useState(false);
   const [orderNumber, setOrderNumber] = useState('');
@@ -47,8 +49,12 @@ export default function OrderCartDrawer({
   const deliveryFee = deliveryType === 'delivery' ? 1000 : 0;
   const total = subtotal + (subtotal > 0 ? deliveryFee : 0);
 
+  const canCheckout = customerName.trim().length > 1 && customerPhone.trim().length > 5 &&
+    (deliveryType !== 'delivery' || address.trim().length > 3);
+
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!canCheckout) return;
     if (isLikelyBot()) {
       const fakeNum = 'ORD-' + Math.floor(10000 + Math.random() * 90000);
       setOrderNumber(fakeNum);
@@ -67,6 +73,8 @@ export default function OrderCartDrawer({
           type: 'Commandes',
           payload: {
             numero: num,
+            nom: customerName.trim(),
+            telephone: customerPhone.trim(),
             type: deliveryType === 'delivery' ? 'Livraison' : 'À emporter',
             adresse: deliveryType === 'delivery' ? address : '',
             articles: cartItems.map(i => `${i.dish.name} x${i.quantity}`).join(', '),
@@ -220,6 +228,25 @@ export default function OrderCartDrawer({
                   ))}
                 </div>
 
+                {/* Customer Info */}
+                <div className="pt-4 border-t border-white/10 space-y-3">
+                  <label className="block text-xs font-bold text-gray-300">Vos Coordonnées</label>
+                  <input
+                    type="text"
+                    placeholder="Nom complet..."
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5A1F]"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Numéro de téléphone..."
+                    value={customerPhone}
+                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    className="w-full bg-[#1A1A1A] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5A1F]"
+                  />
+                </div>
+
                 {/* Delivery Options */}
                 <div className="pt-4 border-t border-white/10 space-y-3">
                   <label className="block text-xs font-bold text-gray-300">Mode de Réception</label>
@@ -290,10 +317,16 @@ export default function OrderCartDrawer({
 
               <button
                 onClick={handleCheckout}
-                className="btn-shine w-full py-3.5 px-6 rounded-full bg-[#FF5A1F] hover:bg-[#E04A15] text-white font-bold text-sm shadow-lg shadow-[#FF5A1F]/30 transition-all flex items-center justify-center gap-2"
+                disabled={!canCheckout}
+                className="btn-shine w-full py-3.5 px-6 rounded-full bg-[#FF5A1F] hover:bg-[#E04A15] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm shadow-lg shadow-[#FF5A1F]/30 transition-all flex items-center justify-center gap-2"
               >
                 <span>Commander ({total.toLocaleString()} FCFA)</span>
               </button>
+              {!canCheckout && (
+                <p className="text-[11px] text-gray-500 text-center">
+                  Renseignez votre nom, téléphone{deliveryType === 'delivery' ? ' et adresse' : ''} pour valider.
+                </p>
+              )}
             </div>
           )}
 
