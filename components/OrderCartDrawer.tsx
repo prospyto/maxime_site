@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { X, Trash2, Plus, Minus, ShoppingBag, Truck, Store, CheckCircle, ArrowRight } from 'lucide-react';
 import { Dish } from './TabbedShowcase';
 import { useAntiBot } from '../hooks/useAntiBot';
+import { useContentBlocks } from '@/hooks/useContentBlocks';
 
 export interface CartItem {
   dish: Dish;
@@ -20,6 +21,10 @@ interface OrderCartDrawerProps {
   onClearCart: () => void;
 }
 
+const FORM_DEFAULTS = {
+  form_commande_title: 'Votre Panier',
+};
+
 export default function OrderCartDrawer({
   isOpen,
   onClose,
@@ -28,6 +33,7 @@ export default function OrderCartDrawer({
   onRemoveItem,
   onClearCart,
 }: OrderCartDrawerProps) {
+  const content = useContentBlocks(FORM_DEFAULTS);
   const [deliveryType, setDeliveryType] = useState<'delivery' | 'pickup'>('delivery');
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
@@ -103,7 +109,7 @@ export default function OrderCartDrawer({
           <div className="p-5 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
             <div className="flex items-center gap-2.5">
               <ShoppingBag className="w-5 h-5 text-[#FF5A1F]" />
-              <h3 className="text-lg font-bold text-white">Votre Panier</h3>
+              <h3 className="text-lg font-bold text-white">{content.form_commande_title}</h3>
               <span className="text-xs bg-[#FF5A1F]/20 text-[#FF5A1F] font-bold px-2.5 py-0.5 rounded-full border border-[#FF5A1F]/30">
                 {cartItems.reduce((sum, item) => sum + item.quantity, 0)} articles
               </span>

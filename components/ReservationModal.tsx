@@ -3,13 +3,20 @@
 import React, { useState, useEffect } from 'react';
 import { X, Calendar, Clock, Users, User, Phone, CheckCircle, Flame } from 'lucide-react';
 import { useAntiBot } from '../hooks/useAntiBot';
+import { useContentBlocks } from '@/hooks/useContentBlocks';
 
 interface ReservationModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const FORM_DEFAULTS = {
+  form_reservation_title: 'Réserver une Table',
+  form_reservation_subtitle: 'Ember Sushi • Confirmation immédiate',
+};
+
 export default function ReservationModal({ isOpen, onClose }: ReservationModalProps) {
+  const content = useContentBlocks(FORM_DEFAULTS);
   const [step, setStep] = useState<'form' | 'success'>('form');
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
@@ -81,8 +88,8 @@ export default function ReservationModal({ isOpen, onClose }: ReservationModalPr
               <Flame className="w-5 h-5 fill-[#FF5A1F]/30" />
             </div>
             <div className="min-w-0">
-              <h3 className="text-base sm:text-lg font-bold text-white truncate">Réserver une Table</h3>
-              <p className="text-xs text-gray-400 truncate">Ember Sushi • Confirmation immédiate</p>
+              <h3 className="text-base sm:text-lg font-bold text-white truncate">{content.form_reservation_title}</h3>
+              <p className="text-xs text-gray-400 truncate">{content.form_reservation_subtitle}</p>
             </div>
           </div>
           <button

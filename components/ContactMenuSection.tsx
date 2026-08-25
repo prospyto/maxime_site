@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { MapPin, Phone, Mail, Clock, ShoppingBag, Send } from 'lucide-react';
 import Reveal from './Reveal';
+import { useContentBlocks } from '@/hooks/useContentBlocks';
 
 interface ContactMenuSectionProps {
   onOpenOrderModal: () => void;
@@ -11,11 +12,30 @@ interface ContactMenuSectionProps {
   onGoToMenu: (tab: 'plats-signature' | 'menu-populaire') => void;
 }
 
+const CONTACT_DEFAULTS = {
+  contact_badge: 'Information & Dégustation',
+  contact_title: 'Contactez-nous',
+  contact_subtitle: 'Une question, une réservation de groupe, un événement privé ? Notre équipe dévouée vous répond immédiatement.',
+  contact_image: '/images/black_plate_leaf.webp',
+  contact_feature1_label: 'Adresse',
+  contact_feature1_text: '142 Avenue des Champs-Élysées, 75008 Paris & Plateau, Abidjan',
+  contact_feature2_label: 'Livraison',
+  contact_feature2_text: 'Disponible en moins de 45 min',
+  contact_feature3_label: 'Réservation en ligne',
+  contact_feature3_text: 'Confirmation instantanée',
+  contact_feature4_label: 'Événements privés',
+  contact_feature4_text: 'Traiteur & Chef à domicile',
+  contact_feature5_label: 'Click & Collect',
+  contact_feature5_text: 'Prêt en 15 minutes',
+};
+
 export default function ContactMenuSection({
   onOpenOrderModal,
   onOpenReservationModal,
   onGoToMenu,
 }: ContactMenuSectionProps) {
+  const content = useContentBlocks(CONTACT_DEFAULTS);
+
   return (
     <section id="contact" className="py-20 lg:py-28 bg-white text-gray-900 relative z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,13 +43,13 @@ export default function ContactMenuSection({
         {/* Section Header */}
         <Reveal className="text-center max-w-2xl mx-auto mb-16 space-y-3">
           <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-widest bg-[#FF5A1F]/10 px-3.5 py-1.5 rounded-full inline-block">
-            Information & Dégustation
+            {content.contact_badge}
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
-            Contactez-nous
+            {content.contact_title}
           </h2>
           <p className="text-base sm:text-lg text-gray-600 font-normal leading-relaxed">
-            Une question, une réservation de groupe, un événement privé ? Notre équipe dévouée vous répond immédiatement.
+            {content.contact_subtitle}
           </p>
         </Reveal>
 
@@ -40,7 +60,7 @@ export default function ContactMenuSection({
           <Reveal direction="left" className="lg:col-span-6 bg-[#F8F9FA] p-6 sm:p-8 rounded-2xl border border-gray-100 shadow-sm space-y-6">
             <div className="relative h-64 sm:h-72 w-full rounded-xl overflow-hidden shadow-md">
               <Image
-                src="/images/black_plate_leaf.webp"
+                src={content.contact_image}
                 alt="Sushi sur assiette noire, décoration feuille verte"
                 fill
                 className="object-cover hover:scale-105 transition-transform duration-500"
@@ -52,27 +72,27 @@ export default function ContactMenuSection({
             <ul className="space-y-4 pt-2">
               <li className="flex items-start gap-3 text-sm sm:text-base font-semibold text-gray-800">
                 <span className="w-3.5 h-3.5 rounded-full bg-[#FF3B30] shrink-0 mt-1" />
-                <span><strong className="text-gray-900">Adresse :</strong> 142 Avenue des Champs-Élysées, 75008 Paris & Plateau, Abidjan</span>
+                <span><strong className="text-gray-900">{content.contact_feature1_label} :</strong> {content.contact_feature1_text}</span>
               </li>
 
               <li className="flex items-center gap-3 text-sm sm:text-base font-semibold text-gray-800">
                 <span className="w-3.5 h-3.5 rounded-full bg-[#34C759] shrink-0" />
-                <span><strong className="text-gray-900">Livraison :</strong> Disponible en moins de 45 min</span>
+                <span><strong className="text-gray-900">{content.contact_feature2_label} :</strong> {content.contact_feature2_text}</span>
               </li>
 
               <li className="flex items-center gap-3 text-sm sm:text-base font-semibold text-gray-800">
                 <span className="w-3.5 h-3.5 rounded-full bg-[#FFCC00] shrink-0" />
-                <span><strong className="text-gray-900">Réservation en ligne :</strong> Confirmation instantanée</span>
+                <span><strong className="text-gray-900">{content.contact_feature3_label} :</strong> {content.contact_feature3_text}</span>
               </li>
 
               <li className="flex items-center gap-3 text-sm sm:text-base font-semibold text-gray-800">
                 <span className="w-3.5 h-3.5 rounded-full bg-[#FF3B30] shrink-0" />
-                <span><strong className="text-gray-900">Événements privés :</strong> Traiteur & Chef à domicile</span>
+                <span><strong className="text-gray-900">{content.contact_feature4_label} :</strong> {content.contact_feature4_text}</span>
               </li>
 
               <li className="flex items-center gap-3 text-sm sm:text-base font-semibold text-gray-800">
                 <span className="w-3.5 h-3.5 rounded-full bg-[#FF3B30] shrink-0" />
-                <span><strong className="text-gray-900">Click & Collect :</strong> Prêt en 15 minutes</span>
+                <span><strong className="text-gray-900">{content.contact_feature5_label} :</strong> {content.contact_feature5_text}</span>
               </li>
             </ul>
           </Reveal>

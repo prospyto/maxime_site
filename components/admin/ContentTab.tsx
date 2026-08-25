@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Image as ImageIcon, Type, Save, Check, Loader2, Pencil } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import DishesTab from '@/components/admin/DishesTab';
+import ReviewsTab from '@/components/admin/ReviewsTab';
 
 interface Block {
   key: string;
@@ -25,7 +26,25 @@ const SPEC_KEYS = [
   'spec_card3_title', 'spec_card3_text',
   'spec_image',
 ];
-const ALL_KEYS = [...HERO_KEYS, ...PHILO_KEYS, ...SPEC_KEYS];
+const SHOWCASE_KEYS = [
+  'showcase_plats_title', 'showcase_plats_subtitle',
+  'showcase_populaire_badge', 'showcase_populaire_title', 'showcase_populaire_subtitle',
+  'showcase_avis_badge', 'showcase_avis_title', 'showcase_avis_subtitle',
+];
+const CONTACT_KEYS = [
+  'contact_badge', 'contact_title', 'contact_subtitle', 'contact_image',
+  'contact_feature1_label', 'contact_feature1_text',
+  'contact_feature2_label', 'contact_feature2_text',
+  'contact_feature3_label', 'contact_feature3_text',
+  'contact_feature4_label', 'contact_feature4_text',
+  'contact_feature5_label', 'contact_feature5_text',
+];
+const SOCIAL_KEYS = ['social_instagram_url', 'social_facebook_url', 'social_twitter_url'];
+const FORM_KEYS = ['form_reservation_title', 'form_reservation_subtitle', 'form_commande_title'];
+const ALL_KEYS = [
+  ...HERO_KEYS, ...PHILO_KEYS, ...SPEC_KEYS,
+  ...SHOWCASE_KEYS, ...CONTACT_KEYS, ...SOCIAL_KEYS, ...FORM_KEYS,
+];
 
 const LABELS: Record<string, string> = {
   hero_title_line1: 'Titre — première ligne',
@@ -51,11 +70,41 @@ const LABELS: Record<string, string> = {
   spec_card3_title: 'Carte 3 — Titre',
   spec_card3_text: 'Carte 3 — Texte',
   spec_image: 'Image (carte du milieu)',
+  showcase_plats_title: 'Titre — onglet "Nos Plats"',
+  showcase_plats_subtitle: 'Sous-titre — onglet "Nos Plats"',
+  showcase_populaire_badge: 'Badge — onglet "Menu Populaire"',
+  showcase_populaire_title: 'Titre — onglet "Menu Populaire"',
+  showcase_populaire_subtitle: 'Sous-titre — onglet "Menu Populaire"',
+  showcase_avis_badge: 'Badge — onglet "Avis Clients"',
+  showcase_avis_title: 'Titre — onglet "Avis Clients"',
+  showcase_avis_subtitle: 'Sous-titre — onglet "Avis Clients"',
+  contact_badge: 'Badge (au-dessus du titre)',
+  contact_title: 'Titre de section',
+  contact_subtitle: 'Sous-titre de section',
+  contact_image: 'Photo de la section',
+  contact_feature1_label: 'Info 1 — Libellé',
+  contact_feature1_text: 'Info 1 — Texte',
+  contact_feature2_label: 'Info 2 — Libellé',
+  contact_feature2_text: 'Info 2 — Texte',
+  contact_feature3_label: 'Info 3 — Libellé',
+  contact_feature3_text: 'Info 3 — Texte',
+  contact_feature4_label: 'Info 4 — Libellé',
+  contact_feature4_text: 'Info 4 — Texte',
+  contact_feature5_label: 'Info 5 — Libellé',
+  contact_feature5_text: 'Info 5 — Texte',
+  social_instagram_url: 'Lien Instagram',
+  social_facebook_url: 'Lien Facebook',
+  social_twitter_url: 'Lien Twitter / X',
+  form_reservation_title: 'Titre — formulaire de réservation',
+  form_reservation_subtitle: 'Sous-titre — formulaire de réservation',
+  form_commande_title: 'Titre — formulaire de commande',
 };
 
 const LONG_TEXT_KEYS = new Set([
   'hero_subtitle', 'philo_subtitle', 'philo_card1_text', 'philo_card2_text',
   'spec_subtitle', 'spec_card1_text', 'spec_card2_text', 'spec_card3_text',
+  'showcase_plats_subtitle', 'showcase_populaire_subtitle', 'showcase_avis_subtitle',
+  'contact_subtitle',
 ]);
 
 export default function ContentTab() {
@@ -297,11 +346,101 @@ export default function ContentTab() {
         </div>
       </div>
 
+      {/* Section En-têtes "Nos Plats" / "Menu Populaire" */}
+      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/8">
+          <h2 className="font-bold text-white">En-têtes "Nos Plats" &amp; "Menu Populaire"</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Titres et sous-titres affichés au-dessus de la grille de plats et de la liste populaire.
+          </p>
+        </div>
+        <div className="p-6 space-y-6">
+          <TextField fieldKey="showcase_plats_title" />
+          <TextField fieldKey="showcase_plats_subtitle" />
+          <TextField fieldKey="showcase_populaire_badge" />
+          <TextField fieldKey="showcase_populaire_title" />
+          <TextField fieldKey="showcase_populaire_subtitle" />
+        </div>
+      </div>
+
       {/* Section Plats */}
       <DishesTab />
 
+      {/* Section Avis Clients */}
+      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/8">
+          <h2 className="font-bold text-white">En-tête "Avis Clients"</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Badge, titre et sous-titre affichés au-dessus des témoignages.
+          </p>
+        </div>
+        <div className="p-6 space-y-6">
+          <TextField fieldKey="showcase_avis_badge" />
+          <TextField fieldKey="showcase_avis_title" />
+          <TextField fieldKey="showcase_avis_subtitle" />
+        </div>
+      </div>
+
+      <ReviewsTab />
+
+      {/* Section Contact */}
+      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/8">
+          <h2 className="font-bold text-white">Section Contact</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Badge, titre, sous-titre, photo et les 5 informations pratiques (adresse, livraison…).
+          </p>
+        </div>
+        <div className="p-6 space-y-6">
+          <TextField fieldKey="contact_badge" />
+          <TextField fieldKey="contact_title" />
+          <TextField fieldKey="contact_subtitle" />
+          <ImageField fieldKey="contact_image" />
+          <TextField fieldKey="contact_feature1_label" />
+          <TextField fieldKey="contact_feature1_text" />
+          <TextField fieldKey="contact_feature2_label" />
+          <TextField fieldKey="contact_feature2_text" />
+          <TextField fieldKey="contact_feature3_label" />
+          <TextField fieldKey="contact_feature3_text" />
+          <TextField fieldKey="contact_feature4_label" />
+          <TextField fieldKey="contact_feature4_text" />
+          <TextField fieldKey="contact_feature5_label" />
+          <TextField fieldKey="contact_feature5_text" />
+        </div>
+      </div>
+
+      {/* Section Réseaux sociaux */}
+      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/8">
+          <h2 className="font-bold text-white">Réseaux sociaux</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Liens des icônes affichées en bas de page (pied de page).
+          </p>
+        </div>
+        <div className="p-6 space-y-6">
+          <TextField fieldKey="social_instagram_url" />
+          <TextField fieldKey="social_facebook_url" />
+          <TextField fieldKey="social_twitter_url" />
+        </div>
+      </div>
+
+      {/* Section Formulaires */}
+      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/8">
+          <h2 className="font-bold text-white">Formulaires</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Titres affichés en haut des formulaires de réservation et de commande.
+          </p>
+        </div>
+        <div className="p-6 space-y-6">
+          <TextField fieldKey="form_reservation_title" />
+          <TextField fieldKey="form_reservation_subtitle" />
+          <TextField fieldKey="form_commande_title" />
+        </div>
+      </div>
+
       <p className="text-xs text-gray-600">
-        D'autres sections (Contact…) seront ajoutées ici progressivement.
+        D'autres ajustements pourront être ajoutés ici progressivement.
       </p>
     </div>
   );

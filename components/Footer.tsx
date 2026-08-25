@@ -2,8 +2,17 @@
 
 import React from 'react';
 import { Flame, Instagram, Facebook, Twitter, ArrowUp } from 'lucide-react';
+import { useContentBlocks } from '@/hooks/useContentBlocks';
+
+const SOCIAL_DEFAULTS = {
+  social_instagram_url: 'https://www.facebook.com/prospere.azonglahoun',
+  social_facebook_url: 'https://www.facebook.com/prospere.azonglahoun',
+  social_twitter_url: 'https://www.facebook.com/prospere.azonglahoun',
+};
 
 export default function Footer() {
+  const content = useContentBlocks(SOCIAL_DEFAULTS);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -26,7 +35,7 @@ export default function Footer() {
         {/* Social Icons */}
         <div className="flex items-center justify-center gap-4 mb-12">
           <a
-            href="https://www.facebook.com/prospere.azonglahoun"
+            href={content.social_instagram_url}
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 rounded-full bg-[#1A1A1A] hover:bg-[#FF5A1F] text-white flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg border border-white/5"
@@ -36,7 +45,7 @@ export default function Footer() {
           </a>
 
           <a
-            href="https://www.facebook.com/prospere.azonglahoun"
+            href={content.social_facebook_url}
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 rounded-full bg-[#1A1A1A] hover:bg-[#FF5A1F] text-white flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg border border-white/5"
@@ -46,7 +55,7 @@ export default function Footer() {
           </a>
 
           <a
-            href="https://www.facebook.com/prospere.azonglahoun"
+            href={content.social_twitter_url}
             target="_blank"
             rel="noopener noreferrer"
             className="w-12 h-12 rounded-full bg-[#1A1A1A] hover:bg-[#FF5A1F] text-white flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg border border-white/5"

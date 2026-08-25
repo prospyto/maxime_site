@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { Star, Plus, Check, ShoppingBag, Flame, Quote, Sparkles } from 'lucide-react';
 import Reveal from './Reveal';
 import { useDishes } from '@/hooks/useDishes';
+import { useReviews } from '@/hooks/useReviews';
+import { useContentBlocks } from '@/hooks/useContentBlocks';
 
 export type { Dish } from '@/lib/dishes-data';
 export { sampleDishes } from '@/lib/dishes-data';
@@ -17,35 +19,16 @@ interface TabbedShowcaseProps {
   forcedTab?: 'plats-signature' | 'menu-populaire' | 'avis-clients';
 }
 
-const customerReviews = [
-  {
-    id: 1,
-    name: 'Jean-Marc K.',
-    role: 'Gastronome Averti',
-    avatar: 'JK',
-    rating: 5,
-    date: 'Il y a 2 jours',
-    comment: 'Une fraîcheur absolue ! Le Saumon Nigiri Flambé est tout simplement le meilleur de la ville. Le cadre sombre et feutré ajoute une vraie touche de luxe.',
-  },
-  {
-    id: 2,
-    name: 'Sarah Benali',
-    role: 'Cliente Régulière',
-    avatar: 'SB',
-    rating: 5,
-    date: 'Il y a 1 semaine',
-    comment: 'Commande livrée en 35 minutes, emballage zéro défaut et la température était parfaite. Les Dragon Rolls sont une tuerie !',
-  },
-  {
-    id: 3,
-    name: 'Alexandre V.',
-    role: 'Critique Culinaire',
-    avatar: 'AV',
-    rating: 5,
-    date: 'Il y a 2 semaines',
-    comment: 'Ember Sushi surpasse les standards de la cuisine japonaise moderne. Le plateau Omakase est une œuvre d’art visuelle et gustative.',
-  },
-];
+const SHOWCASE_DEFAULTS = {
+  showcase_plats_title: 'Toutes nos Créations Gourmandes',
+  showcase_plats_subtitle: 'Sélectionnez et ajoutez directement à votre panier de dégustation.',
+  showcase_populaire_badge: 'Incontournables',
+  showcase_populaire_title: 'Les Incontournables d\u2019Ember Sushi',
+  showcase_populaire_subtitle: 'Plats les plus commandés et plébiscités par nos clients réguliers.',
+  showcase_avis_badge: 'Expériences Reçues',
+  showcase_avis_title: 'Ce que disent nos Gourmets',
+  showcase_avis_subtitle: 'Note moyenne de 4.9/5 sur plus de 1,200 avis vérifiés.',
+};
 
 export default function TabbedShowcase({
   onAddToCart,
@@ -55,6 +38,8 @@ export default function TabbedShowcase({
 }: TabbedShowcaseProps) {
   const [activeTab, setActiveTab] = useState<'plats-signature' | 'menu-populaire' | 'avis-clients'>('menu-populaire');
   const { dishes } = useDishes();
+  const { reviews: customerReviews } = useReviews();
+  const content = useContentBlocks(SHOWCASE_DEFAULTS);
 
   // Quand forcedTab change depuis le parent, on bascule l'onglet
   React.useEffect(() => {
@@ -112,8 +97,8 @@ export default function TabbedShowcase({
         {activeTab === 'plats-signature' && (
           <div className="space-y-8 animate-in fade-in duration-300">
             <Reveal className="text-center max-w-xl mx-auto mb-8">
-              <h3 className="text-2xl font-bold text-gray-900">Toutes nos Créations Gourmandes</h3>
-              <p className="text-sm text-gray-500 mt-1">Sélectionnez et ajoutez directement à votre panier de dégustation.</p>
+              <h3 className="text-2xl font-bold text-gray-900">{content.showcase_plats_title}</h3>
+              <p className="text-sm text-gray-500 mt-1">{content.showcase_plats_subtitle}</p>
             </Reveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -193,10 +178,10 @@ export default function TabbedShowcase({
           <div className="space-y-8 animate-in fade-in duration-300">
             <Reveal className="text-center max-w-xl mx-auto mb-6">
               <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-wider bg-[#FF5A1F]/10 px-3 py-1 rounded-full inline-block">
-                Incontournables
+                {content.showcase_populaire_badge}
               </span>
-              <h3 className="text-2xl font-bold text-gray-900 mt-2">Les Incontournables d&apos;Ember Sushi</h3>
-              <p className="text-sm text-gray-600 mt-1">Plats les plus commandés et plébiscités par nos clients réguliers.</p>
+              <h3 className="text-2xl font-bold text-gray-900 mt-2">{content.showcase_populaire_title}</h3>
+              <p className="text-sm text-gray-600 mt-1">{content.showcase_populaire_subtitle}</p>
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -268,10 +253,10 @@ export default function TabbedShowcase({
           <div className="space-y-8 animate-in fade-in duration-300">
             <Reveal className="text-center max-w-xl mx-auto mb-6">
               <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-wider bg-[#FF5A1F]/10 px-3 py-1 rounded-full inline-block">
-                Expériences Reçues
+                {content.showcase_avis_badge}
               </span>
-              <h3 className="text-2xl font-bold text-gray-900 mt-2">Ce que disent nos Gourmets</h3>
-              <p className="text-sm text-gray-600 mt-1">Note moyenne de 4.9/5 sur plus de 1,200 avis vérifiés.</p>
+              <h3 className="text-2xl font-bold text-gray-900 mt-2">{content.showcase_avis_title}</h3>
+              <p className="text-sm text-gray-600 mt-1">{content.showcase_avis_subtitle}</p>
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
