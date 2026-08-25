@@ -4,6 +4,7 @@ import Script from 'next/script';
 import './globals.css';
 import ConnectionWatcher from '../components/ConnectionWatcher';
 import InitialLoader from '../components/InitialLoader';
+import VisitTracker from '../components/VisitTracker';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -55,6 +56,7 @@ export default function RootLayout({
         </Script>
         <InitialLoader />
         <ConnectionWatcher />
+        <VisitTracker />
         {children}
       </body>
     </html>
