@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Image as ImageIcon, Type, Save, Check, Loader2 } from 'lucide-react';
+import { Image as ImageIcon, Type, Save, Check, Loader2, Pencil } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import DishesTab from '@/components/admin/DishesTab';
 
@@ -63,6 +63,19 @@ export default function ContentTab() {
   const [saving, setSaving] = useState<string | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
   const [uploading, setUploading] = useState<string | null>(null);
+  const [editingKeys, setEditingKeys] = useState<Set<string>>(new Set());
+
+  const startEditing = (key: string) => {
+    setEditingKeys((prev) => new Set(prev).add(key));
+  };
+
+  const stopEditing = (key: string) => {
+    setEditingKeys((prev) => {
+      const next = new Set(prev);
+      next.delete(key);
+      return next;
+    });
+  };
 
   const load = useCallback(async () => {
     const { data } = await supabase
@@ -87,6 +100,7 @@ export default function ContentTab() {
     setSaving(null);
     if (!error) {
       setSaved(key);
+      stopEditing(key);
       setTimeout(() => setSaved(null), 2000);
     }
   };
@@ -124,43 +138,71 @@ export default function ContentTab() {
     setTimeout(() => setSaved(null), 2000);
   };
 
-  const TextField = ({ fieldKey }: { fieldKey: string }) => (
-    <div className="space-y-2">
-      <label className="flex items-center gap-2 text-xs font-bold text-gray-300">
-        <Type className="w-3.5 h-3.5" /> {LABELS[fieldKey]}
-      </label>
-      <div className="flex gap-2">
-        {LONG_TEXT_KEYS.has(fieldKey) ? (
-          <textarea
-            value={blocks[fieldKey] || ''}
-            onChange={(e) => setBlocks((p) => ({ ...p, [fieldKey]: e.target.value }))}
-            rows={3}
-            className="flex-1 bg-[#1A1A1A] border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5A1F] resize-none"
-          />
-        ) : (
-          <input
-            type="text"
-            value={blocks[fieldKey] || ''}
-            onChange={(e) => setBlocks((p) => ({ ...p, [fieldKey]: e.target.value }))}
-            className="flex-1 bg-[#1A1A1A] border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#FF5A1F]"
-          />
-        )}
-        <button
-          onClick={() => saveBlock(fieldKey)}
-          disabled={saving === fieldKey}
-          className="shrink-0 w-11 h-11 rounded-xl bg-[#FF5A1F] hover:bg-[#E04A15] disabled:opacity-50 flex items-center justify-center transition-colors"
-        >
-          {saving === fieldKey ? (
-            <Loader2 className="w-4 h-4 text-white animate-spin" />
-          ) : saved === fieldKey ? (
-            <Check className="w-4 h-4 text-white" />
+  const TextField = ({ fieldKey }: { fieldKey: string }) => {
+    const isEditing = editingKeys.has(fieldKey);
+
+    if (!isEditing) {
+      return (
+        <div className="space-y-2">
+          <label className="flex items-center gap-2 text-xs font-bold text-gray-300">
+            <Type className="w-3.5 h-3.5" /> {LABELS[fieldKey]}
+          </label>
+          <div className="flex gap-2">
+            <div className="flex-1 bg-[#1A1A1A] border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-gray-200 min-h-[44px] flex items-center">
+              {blocks[fieldKey] || <span className="text-gray-600">Vide</span>}
+            </div>
+            <button
+              onClick={() => startEditing(fieldKey)}
+              className="shrink-0 flex items-center gap-2 px-4 h-11 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 text-sm font-bold transition-colors"
+            >
+              <Pencil className="w-4 h-4" /> Modifier
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-2">
+        <label className="flex items-center gap-2 text-xs font-bold text-gray-300">
+          <Type className="w-3.5 h-3.5" /> {LABELS[fieldKey]}
+        </label>
+        <div className="flex gap-2">
+          {LONG_TEXT_KEYS.has(fieldKey) ? (
+            <textarea
+              autoFocus
+              value={blocks[fieldKey] || ''}
+              onChange={(e) => setBlocks((p) => ({ ...p, [fieldKey]: e.target.value }))}
+              rows={3}
+              className="flex-1 bg-[#1A1A1A] border border-[#FF5A1F] rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none resize-none"
+            />
           ) : (
-            <Save className="w-4 h-4 text-white" />
+            <input
+              autoFocus
+              type="text"
+              value={blocks[fieldKey] || ''}
+              onChange={(e) => setBlocks((p) => ({ ...p, [fieldKey]: e.target.value }))}
+              className="flex-1 bg-[#1A1A1A] border border-[#FF5A1F] rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none"
+            />
           )}
-        </button>
+          <button
+            onClick={() => saveBlock(fieldKey)}
+            disabled={saving === fieldKey}
+            className="shrink-0 w-11 h-11 rounded-xl bg-[#FF5A1F] hover:bg-[#E04A15] disabled:opacity-50 flex items-center justify-center transition-colors"
+            title="Valider"
+          >
+            {saving === fieldKey ? (
+              <Loader2 className="w-4 h-4 text-white animate-spin" />
+            ) : saved === fieldKey ? (
+              <Check className="w-4 h-4 text-white" />
+            ) : (
+              <Save className="w-4 h-4 text-white" />
+            )}
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const ImageField = ({ fieldKey }: { fieldKey: string }) => (
     <div className="space-y-2 pt-2 border-t border-white/8">
