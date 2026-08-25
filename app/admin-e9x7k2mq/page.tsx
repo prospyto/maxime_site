@@ -1,11 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Flame, Lock, LogOut, Users, CalendarCheck, ShoppingBag, TrendingUp, RefreshCw, Eye, Clock, MapPin, Phone, Type, UtensilsCrossed } from 'lucide-react';
+import { Flame, Lock, LogOut, Users, CalendarCheck, ShoppingBag, TrendingUp, RefreshCw, Eye, Clock, MapPin, Phone, Type } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import AnalyticsTab from '@/components/admin/AnalyticsTab';
 import ContentTab from '@/components/admin/ContentTab';
-import DishesTab from '@/components/admin/DishesTab';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface Reservation {
@@ -151,7 +150,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [commandes, setCommandes] = useState<Commande[]>([]);
   const [stats, setStats] = useState<Stats>({ totalReservations: 0, totalCommandes: 0, derniereReservation: '-', derniereCommande: '-' });
-  const [activeTab, setActiveTab] = useState<'overview' | 'reservations' | 'commandes' | 'analytics' | 'content' | 'dishes'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'reservations' | 'commandes' | 'analytics' | 'content'>('overview');
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<string>('');
 
@@ -258,7 +257,6 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             { key: 'commandes', label: 'Commandes', icon: ShoppingBag },
             { key: 'analytics', label: 'Analytique', icon: Eye },
             { key: 'content', label: 'Contenu', icon: Type },
-            { key: 'dishes', label: 'Plats', icon: UtensilsCrossed },
           ] as const).map(({ key, label, icon: Icon }) => (
             <button
               key={key}
@@ -521,8 +519,6 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
         {/* Contenu (CMS) */}
         {activeTab === 'content' && <ContentTab />}
-
-        {activeTab === 'dishes' && <DishesTab />}
 
       </main>
     </div>

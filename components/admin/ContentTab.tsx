@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Image as ImageIcon, Type, Save, Check, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import DishesTab from '@/components/admin/DishesTab';
 
 interface Block {
   key: string;
@@ -254,8 +255,11 @@ export default function ContentTab() {
         </div>
       </div>
 
+      {/* Section Plats */}
+      <DishesTab />
+
       <p className="text-xs text-gray-600">
-        D'autres sections (Menu détaillé, Contact…) seront ajoutées ici progressivement.
+        D'autres sections (Contact…) seront ajoutées ici progressivement.
       </p>
     </div>
   );
