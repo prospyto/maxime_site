@@ -1,5 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export async function GET() {
+  // Diagnostic sans divulguer la valeur : confirme si la variable
+  // ADMIN_PASSWORD est bien reçue par le serveur en production.
+  const pw = process.env.ADMIN_PASSWORD;
+  return NextResponse.json({
+    variableDefinie: typeof pw === 'string' && pw.length > 0,
+    longueur: pw ? pw.length : 0,
+  });
+}
+
 export async function POST(req: NextRequest) {
   const { password } = await req.json();
 
