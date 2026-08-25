@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Flame, Lock, LogOut, Users, CalendarCheck, ShoppingBag, TrendingUp, RefreshCw, Eye, Clock, MapPin, Phone } from 'lucide-react';
+import { Flame, Lock, LogOut, Users, CalendarCheck, ShoppingBag, TrendingUp, RefreshCw, Eye, Clock, MapPin, Phone, Type } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import AnalyticsTab from '@/components/admin/AnalyticsTab';
+import ContentTab from '@/components/admin/ContentTab';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 interface Reservation {
@@ -149,7 +150,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [commandes, setCommandes] = useState<Commande[]>([]);
   const [stats, setStats] = useState<Stats>({ totalReservations: 0, totalCommandes: 0, derniereReservation: '-', derniereCommande: '-' });
-  const [activeTab, setActiveTab] = useState<'overview' | 'reservations' | 'commandes' | 'analytics'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'reservations' | 'commandes' | 'analytics' | 'content'>('overview');
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<string>('');
 
@@ -255,6 +256,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             { key: 'reservations', label: 'Réservations', icon: CalendarCheck },
             { key: 'commandes', label: 'Commandes', icon: ShoppingBag },
             { key: 'analytics', label: 'Analytique', icon: Eye },
+            { key: 'content', label: 'Contenu', icon: Type },
           ] as const).map(({ key, label, icon: Icon }) => (
             <button
               key={key}
@@ -514,6 +516,9 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
         {/* Analytique */}
         {activeTab === 'analytics' && <AnalyticsTab />}
+
+        {/* Contenu (CMS) */}
+        {activeTab === 'content' && <ContentTab />}
 
       </main>
     </div>
