@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Flame, Menu as MenuIcon, X, ShoppingBag, Calendar } from 'lucide-react';
+import { useContentBlocks } from '@/hooks/useContentBlocks';
 
 interface NavbarProps {
   onOpenReservation: () => void;
@@ -9,7 +10,13 @@ interface NavbarProps {
   cartCount: number;
 }
 
+const CTA_DEFAULTS = {
+  cta_reserver_table: 'Réserver une table',
+  cta_navbar_panier: 'Mon Panier',
+};
+
 export default function Navbar({ onOpenReservation, onOpenCart, cartCount }: NavbarProps) {
+  const content = useContentBlocks(CTA_DEFAULTS);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
@@ -117,7 +124,7 @@ export default function Navbar({ onOpenReservation, onOpenCart, cartCount }: Nav
               id="btn-nav-reserve"
             >
               <Calendar className="w-4 h-4" />
-              <span>Réserver une table</span>
+              <span>{content.cta_reserver_table}</span>
             </button>
 
             {/* Mobile Menu Toggle Button */}
@@ -166,7 +173,7 @@ export default function Navbar({ onOpenReservation, onOpenCart, cartCount }: Nav
               className="w-full flex items-center justify-center gap-2 px-5 py-3 text-base font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all"
             >
               <Calendar className="w-5 h-5" />
-              <span>Réserver une table</span>
+              <span>{content.cta_reserver_table}</span>
             </button>
 
             <button
@@ -177,7 +184,7 @@ export default function Navbar({ onOpenReservation, onOpenCart, cartCount }: Nav
               className="w-full flex items-center justify-center gap-2 px-5 py-2.5 text-base font-semibold text-gray-300 bg-white/5 hover:bg-white/10 rounded-full transition-all border border-white/10"
             >
               <ShoppingBag className="w-5 h-5 text-[#FF5A1F]" />
-              <span>Mon Panier ({cartCount})</span>
+              <span>{content.cta_navbar_panier} ({cartCount})</span>
             </button>
           </div>
         </div>

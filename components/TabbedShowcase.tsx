@@ -28,6 +28,8 @@ const SHOWCASE_DEFAULTS = {
   showcase_avis_badge: 'Expériences Reçues',
   showcase_avis_title: 'Ce que disent nos Gourmets',
   showcase_avis_subtitle: 'Note moyenne de 4.9/5 sur plus de 1,200 avis vérifiés.',
+  cta_dish_ajouter_panier: 'Ajouter au panier',
+  cta_dish_commander: 'Commander',
 };
 
 export default function TabbedShowcase({
@@ -164,7 +166,7 @@ export default function TabbedShowcase({
                             <span>Ajouté au panier</span>
                           </>
                         ) : (
-                          <span>Ajouter au panier</span>
+                          <span>{content.cta_dish_ajouter_panier}</span>
                         )}
                       </button>
                     </div>
@@ -239,7 +241,7 @@ export default function TabbedShowcase({
                               : 'bg-[#FF5A1F] hover:bg-[#E04A15] text-white shadow'
                           }`}
                         >
-                          {isAdded ? '✓ Dans le panier' : 'Commander'}
+                          {isAdded ? '✓ Dans le panier' : content.cta_dish_commander}
                         </button>
                       </div>
                     </div>

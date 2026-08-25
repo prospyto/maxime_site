@@ -17,6 +17,8 @@ const ORDER_DEFAULTS = {
   order_title_highlight: 'Expérience Sushi',
   order_subtitle: 'Que ce soit pour une commande à emporter, une livraison express ou une réservation en salle, vivez l\u2019expérience Ember Sushi avec la même exigence et fraîcheur exceptionnelle.',
   order_image: '/images/sushi_diagonal.webp',
+  cta_order_commander: 'Commander maintenant',
+  cta_reserver_table: 'Réserver une table',
 };
 
 export default function OrderSection({
@@ -65,7 +67,7 @@ export default function OrderSection({
                 id="btn-order-now"
               >
                 <ShoppingBag className="w-5 h-5" />
-                <span>Commander maintenant</span>
+                <span>{content.cta_order_commander}</span>
               </button>
 
               <button
@@ -74,7 +76,7 @@ export default function OrderSection({
                 id="btn-order-reserve-secondary"
               >
                 <CalendarCheck className="w-5 h-5 text-[#FF5A1F]" />
-                <span>Réserver une table</span>
+                <span>{content.cta_reserver_table}</span>
               </button>
             </div>
         </Reveal>

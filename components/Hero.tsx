@@ -14,6 +14,7 @@ const HERO_DEFAULTS = {
   hero_title_highlight: 'Moderne & Authentique',
   hero_subtitle: "Chez Ember Sushi, chaque pièce est façonnée à la main avec des produits frais d'exception. Une gastronomie japonaise raffinée et créative.",
   hero_image: '/images/hero_sushi_plate.webp',
+  cta_hero_button: 'Découvrir',
 };
 
 export default function Hero({ onOpenReservation }: HeroProps) {
@@ -73,7 +74,7 @@ export default function Hero({ onOpenReservation }: HeroProps) {
               className="btn-shine inline-flex items-center gap-3 px-8 py-4 text-base font-bold text-white bg-[#FF5A1F] hover:bg-[#E04A15] rounded-full transition-all duration-300 shadow-xl shadow-[#FF5A1F]/40 hover:shadow-[#FF5A1F]/60 hover:-translate-y-0.5"
               id="btn-hero-menu"
             >
-              <span>Découvrir</span>
+              <span>{content.cta_hero_button}</span>
             </a>
           </motion.div>
         </div>

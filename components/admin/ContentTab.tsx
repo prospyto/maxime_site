@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Image as ImageIcon, Type, Save, Check, Loader2, Pencil, Flame, Leaf, Star, UtensilsCrossed, MapPin, ShoppingBag, Share2, FileText } from 'lucide-react';
+import { Image as ImageIcon, Type, Save, Check, Loader2, Pencil, Flame, Leaf, Star, UtensilsCrossed, MapPin, ShoppingBag, Share2, FileText, MousePointerClick } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import DishesTab from '@/components/admin/DishesTab';
 import ReviewsTab from '@/components/admin/ReviewsTab';
@@ -42,9 +42,14 @@ const CONTACT_KEYS = [
 const ORDER_SECTION_KEYS = ['order_badge', 'order_title_line1', 'order_title_highlight', 'order_subtitle', 'order_image'];
 const SOCIAL_KEYS = ['social_instagram_url', 'social_facebook_url', 'social_twitter_url'];
 const FORM_KEYS = ['form_reservation_title', 'form_reservation_subtitle', 'form_commande_title'];
+const CTA_KEYS = [
+  'cta_hero_button', 'cta_reserver_table', 'cta_navbar_panier',
+  'cta_order_commander', 'cta_contact_voir_menu',
+  'cta_dish_ajouter_panier', 'cta_dish_commander',
+];
 const ALL_KEYS = [
   ...HERO_KEYS, ...PHILO_KEYS, ...SPEC_KEYS,
-  ...SHOWCASE_KEYS, ...CONTACT_KEYS, ...ORDER_SECTION_KEYS, ...SOCIAL_KEYS, ...FORM_KEYS,
+  ...SHOWCASE_KEYS, ...CONTACT_KEYS, ...ORDER_SECTION_KEYS, ...SOCIAL_KEYS, ...FORM_KEYS, ...CTA_KEYS,
 ];
 
 const LABELS: Record<string, string> = {
@@ -107,6 +112,13 @@ const LABELS: Record<string, string> = {
   form_reservation_title: 'Titre — formulaire de réservation',
   form_reservation_subtitle: 'Sous-titre — formulaire de réservation',
   form_commande_title: 'Titre — formulaire de commande',
+  cta_hero_button: 'Bouton Accueil — "Découvrir"',
+  cta_reserver_table: 'Bouton "Réserver une table" (barre de navigation + section Commander)',
+  cta_navbar_panier: 'Bouton "Mon Panier" (menu mobile, avant le nombre d\u2019articles)',
+  cta_order_commander: 'Bouton "Commander maintenant" (section Commander)',
+  cta_contact_voir_menu: 'Bouton "Voir le menu complet" (section Contact)',
+  cta_dish_ajouter_panier: 'Bouton "Ajouter au panier" (grande carte plat)',
+  cta_dish_commander: 'Bouton "Commander" (carte plat, Menu Populaire)',
 };
 
 const LONG_TEXT_KEYS = new Set([
@@ -260,6 +272,7 @@ const ZONES = {
   commander: { color: '#EC4899', icon: ShoppingBag, label: 'Commander' },
   social: { color: '#A78BFA', icon: Share2, label: 'Réseaux Sociaux' },
   forms: { color: '#94A3B8', icon: FileText, label: 'Formulaires' },
+  cta: { color: '#10B981', icon: MousePointerClick, label: "Boutons d'Action" },
 } as const;
 
 type ZoneKey = keyof typeof ZONES;
@@ -547,6 +560,20 @@ export default function ContentTab() {
         {renderTextField('form_reservation_title')}
         {renderTextField('form_reservation_subtitle')}
         {renderTextField('form_commande_title')}
+      </SectionCard>
+
+      <SectionCard
+        zone="cta"
+        title="Boutons d'action"
+        description="Textes de tous les boutons d'action du site (Découvrir, Réserver, Commander, Ajouter au panier…)."
+      >
+        {renderTextField('cta_hero_button')}
+        {renderTextField('cta_reserver_table')}
+        {renderTextField('cta_navbar_panier')}
+        {renderTextField('cta_order_commander')}
+        {renderTextField('cta_contact_voir_menu')}
+        {renderTextField('cta_dish_ajouter_panier')}
+        {renderTextField('cta_dish_commander')}
       </SectionCard>
 
       <p className="text-xs text-gray-600">

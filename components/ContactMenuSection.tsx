@@ -27,6 +27,7 @@ const CONTACT_DEFAULTS = {
   contact_feature4_text: 'Traiteur & Chef à domicile',
   contact_feature5_label: 'Click & Collect',
   contact_feature5_text: 'Prêt en 15 minutes',
+  cta_contact_voir_menu: 'Voir le menu complet',
 };
 
 export default function ContactMenuSection({
@@ -161,7 +162,7 @@ export default function ContactMenuSection({
             id="btn-contact-see-menu"
           >
             <ShoppingBag className="w-5 h-5" />
-            <span>Voir le menu complet</span>
+            <span>{content.cta_contact_voir_menu}</span>
           </button>
 
           <button
