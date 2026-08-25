@@ -4,22 +4,32 @@ import React from 'react';
 import Image from 'next/image';
 import { CalendarCheck, ShoppingBag } from 'lucide-react';
 import Reveal from './Reveal';
+import { useContentBlocks } from '@/hooks/useContentBlocks';
 
 interface OrderSectionProps {
   onOpenOrderModal: () => void;
   onOpenReservationModal: () => void;
 }
 
+const ORDER_DEFAULTS = {
+  order_badge: 'Service Sur-Mesure',
+  order_title_line1: 'Commandez Votre',
+  order_title_highlight: 'Expérience Sushi',
+  order_subtitle: 'Que ce soit pour une commande à emporter, une livraison express ou une réservation en salle, vivez l\u2019expérience Ember Sushi avec la même exigence et fraîcheur exceptionnelle.',
+  order_image: '/images/sushi_diagonal.webp',
+};
+
 export default function OrderSection({
   onOpenOrderModal,
   onOpenReservationModal,
 }: OrderSectionProps) {
+  const content = useContentBlocks(ORDER_DEFAULTS);
   return (
     <section id="commander" className="relative py-20 lg:py-28 text-white overflow-hidden">
       {/* Full-section background image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/sushi_diagonal.webp"
+          src={content.order_image}
           alt="Plat de sushi avec baguettes en diagonale"
           fill
           className="object-cover"
@@ -36,16 +46,16 @@ export default function OrderSection({
         {/* Text Content */}
         <Reveal className="max-w-2xl space-y-6 text-center lg:text-left mx-auto lg:mx-0">
             <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-widest bg-[#FF5A1F]/10 px-3.5 py-1.5 rounded-full inline-block border border-[#FF5A1F]/20">
-              Service Sur-Mesure
+              {content.order_badge}
             </span>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-[1.15]">
-              Commandez Votre <br />
-              <span className="text-[#FF5A1F]">Expérience Sushi</span>
+              {content.order_title_line1} <br />
+              <span className="text-[#FF5A1F]">{content.order_title_highlight}</span>
             </h2>
 
             <p className="text-base sm:text-lg text-gray-300 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Que ce soit pour une commande à emporter, une livraison express ou une réservation en salle, vivez l&apos;expérience Ember Sushi avec la même exigence et fraîcheur exceptionnelle.
+              {content.order_subtitle}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">

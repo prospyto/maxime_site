@@ -39,11 +39,12 @@ const CONTACT_KEYS = [
   'contact_feature4_label', 'contact_feature4_text',
   'contact_feature5_label', 'contact_feature5_text',
 ];
+const ORDER_SECTION_KEYS = ['order_badge', 'order_title_line1', 'order_title_highlight', 'order_subtitle', 'order_image'];
 const SOCIAL_KEYS = ['social_instagram_url', 'social_facebook_url', 'social_twitter_url'];
 const FORM_KEYS = ['form_reservation_title', 'form_reservation_subtitle', 'form_commande_title'];
 const ALL_KEYS = [
   ...HERO_KEYS, ...PHILO_KEYS, ...SPEC_KEYS,
-  ...SHOWCASE_KEYS, ...CONTACT_KEYS, ...SOCIAL_KEYS, ...FORM_KEYS,
+  ...SHOWCASE_KEYS, ...CONTACT_KEYS, ...ORDER_SECTION_KEYS, ...SOCIAL_KEYS, ...FORM_KEYS,
 ];
 
 const LABELS: Record<string, string> = {
@@ -95,6 +96,11 @@ const LABELS: Record<string, string> = {
   social_instagram_url: 'Lien Instagram',
   social_facebook_url: 'Lien Facebook',
   social_twitter_url: 'Lien Twitter / X',
+  order_badge: 'Badge (au-dessus du titre)',
+  order_title_line1: 'Titre — première ligne',
+  order_title_highlight: 'Titre — ligne en surbrillance',
+  order_subtitle: 'Sous-titre',
+  order_image: 'Image de fond',
   form_reservation_title: 'Titre — formulaire de réservation',
   form_reservation_subtitle: 'Sous-titre — formulaire de réservation',
   form_commande_title: 'Titre — formulaire de commande',
@@ -105,6 +111,7 @@ const LONG_TEXT_KEYS = new Set([
   'spec_subtitle', 'spec_card1_text', 'spec_card2_text', 'spec_card3_text',
   'showcase_plats_subtitle', 'showcase_populaire_subtitle', 'showcase_avis_subtitle',
   'contact_subtitle',
+  'order_subtitle',
 ]);
 
 export default function ContentTab() {
@@ -406,6 +413,23 @@ export default function ContentTab() {
           <TextField fieldKey="contact_feature4_text" />
           <TextField fieldKey="contact_feature5_label" />
           <TextField fieldKey="contact_feature5_text" />
+        </div>
+      </div>
+
+      {/* Section Commander */}
+      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/8">
+          <h2 className="font-bold text-white">Section Commander</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Badge, titre, sous-titre et image de fond de la section "Commandez Votre Expérience Sushi".
+          </p>
+        </div>
+        <div className="p-6 space-y-6">
+          <TextField fieldKey="order_badge" />
+          <TextField fieldKey="order_title_line1" />
+          <TextField fieldKey="order_title_highlight" />
+          <TextField fieldKey="order_subtitle" />
+          <ImageField fieldKey="order_image" />
         </div>
       </div>
 
