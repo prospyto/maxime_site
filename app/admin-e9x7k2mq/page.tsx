@@ -153,6 +153,28 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [activeTab, setActiveTab] = useState<'overview' | 'reservations' | 'commandes' | 'analytics' | 'content'>('overview');
   const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState<string>('');
+  const [visitsToday, setVisitsToday] = useState(0);
+  const [liveVisitors, setLiveVisitors] = useState(0);
+
+  const fetchAnalyticsSummary = useCallback(async () => {
+    try {
+      const now = new Date();
+      const todayStart = new Date(now);
+      todayStart.setHours(0, 0, 0, 0);
+      const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000);
+
+      const { data } = await supabase
+        .from('page_views')
+        .select('created_at')
+        .gte('created_at', todayStart.toISOString());
+
+      const views = data || [];
+      setVisitsToday(views.length);
+      setLiveVisitors(views.filter((v: { created_at: string }) => new Date(v.created_at) >= fiveMinAgo).length);
+    } catch {
+      // page_views vide ou inaccessible
+    }
+  }, []);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -194,6 +216,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     let ignore = false;
     async function init() {
       await fetchData();
+      await fetchAnalyticsSummary();
     }
     init();
 
@@ -205,13 +228,21 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'commandes' }, () => {
         if (!ignore) fetchData();
       })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'page_views' }, () => {
+        if (!ignore) fetchAnalyticsSummary();
+      })
       .subscribe();
+
+    const interval = setInterval(() => {
+      if (!ignore) fetchAnalyticsSummary();
+    }, 30000);
 
     return () => {
       ignore = true;
       supabase.removeChannel(channel);
+      clearInterval(interval);
     };
-  }, [fetchData]);
+  }, [fetchData, fetchAnalyticsSummary]);
 
   const handleLogout = async () => {
     await fetch('/api/admin-auth', { method: 'DELETE' });
@@ -307,13 +338,15 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
                 value={stats.totalReservations + stats.totalCommandes}
                 color="bg-blue-500/10 text-blue-400"
               />
-              <StatCard
-                icon={Eye}
-                label="Voir GA4"
-                value="→ Analytics"
-                sub="Clique pour ouvrir"
-                color="bg-green-500/10 text-green-400"
-              />
+              <button onClick={() => setActiveTab('analytics')} className="text-left w-full">
+                <StatCard
+                  icon={Eye}
+                  label="Visites aujourd'hui"
+                  value={visitsToday}
+                  sub={liveVisitors > 0 ? `${liveVisitors} en ligne maintenant` : 'Voir le détail →'}
+                  color="bg-green-500/10 text-green-400"
+                />
+              </button>
             </div>
 
             {/* Dernières réservations */}
