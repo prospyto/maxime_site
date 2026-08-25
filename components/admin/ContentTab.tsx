@@ -17,7 +17,14 @@ const PHILO_KEYS = [
   'philo_card2_title', 'philo_card2_text',
   'philo_image1', 'philo_image2',
 ];
-const ALL_KEYS = [...HERO_KEYS, ...PHILO_KEYS];
+const SPEC_KEYS = [
+  'spec_badge', 'spec_title', 'spec_subtitle',
+  'spec_card1_title', 'spec_card1_text',
+  'spec_card2_title', 'spec_card2_text',
+  'spec_card3_title', 'spec_card3_text',
+  'spec_image',
+];
+const ALL_KEYS = [...HERO_KEYS, ...PHILO_KEYS, ...SPEC_KEYS];
 
 const LABELS: Record<string, string> = {
   hero_title_line1: 'Titre — première ligne',
@@ -33,9 +40,22 @@ const LABELS: Record<string, string> = {
   philo_card2_text: 'Carte 2 — Texte',
   philo_image1: 'Image de gauche',
   philo_image2: 'Image de droite',
+  spec_badge: 'Badge (au-dessus du titre)',
+  spec_title: 'Titre de section',
+  spec_subtitle: 'Sous-titre de section',
+  spec_card1_title: 'Carte 1 — Titre',
+  spec_card1_text: 'Carte 1 — Texte',
+  spec_card2_title: 'Carte 2 — Titre',
+  spec_card2_text: 'Carte 2 — Texte',
+  spec_card3_title: 'Carte 3 — Titre',
+  spec_card3_text: 'Carte 3 — Texte',
+  spec_image: 'Image (carte du milieu)',
 };
 
-const LONG_TEXT_KEYS = new Set(['hero_subtitle', 'philo_subtitle', 'philo_card1_text', 'philo_card2_text']);
+const LONG_TEXT_KEYS = new Set([
+  'hero_subtitle', 'philo_subtitle', 'philo_card1_text', 'philo_card2_text',
+  'spec_subtitle', 'spec_card1_text', 'spec_card2_text', 'spec_card3_text',
+]);
 
 export default function ContentTab() {
   const [blocks, setBlocks] = useState<Record<string, string>>({});
@@ -212,8 +232,30 @@ export default function ContentTab() {
         </div>
       </div>
 
+      {/* Section Spécialités */}
+      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-white/8">
+          <h2 className="font-bold text-white">Section Spécialités</h2>
+          <p className="text-xs text-gray-500 mt-1">
+            Badge, titre, sous-titre, les 3 cartes catégories et l'image du menu.
+          </p>
+        </div>
+        <div className="p-6 space-y-6">
+          <TextField fieldKey="spec_badge" />
+          <TextField fieldKey="spec_title" />
+          <TextField fieldKey="spec_subtitle" />
+          <TextField fieldKey="spec_card1_title" />
+          <TextField fieldKey="spec_card1_text" />
+          <TextField fieldKey="spec_card2_title" />
+          <TextField fieldKey="spec_card2_text" />
+          <TextField fieldKey="spec_card3_title" />
+          <TextField fieldKey="spec_card3_text" />
+          <ImageField fieldKey="spec_image" />
+        </div>
+      </div>
+
       <p className="text-xs text-gray-600">
-        D'autres sections (Menu, Contact…) seront ajoutées ici progressivement.
+        D'autres sections (Menu détaillé, Contact…) seront ajoutées ici progressivement.
       </p>
     </div>
   );

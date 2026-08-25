@@ -4,12 +4,27 @@ import React from 'react';
 import Image from 'next/image';
 import { Star, Gem, Palette } from 'lucide-react';
 import Reveal from './Reveal';
+import { useContentBlocks } from '@/hooks/useContentBlocks';
 
 interface SpecialtiesProps {
   onSelectCategory?: (category: string) => void;
 }
 
+const SPEC_DEFAULTS = {
+  spec_badge: "Menu d'Exception",
+  spec_title: 'Nos Spécialités',
+  spec_subtitle: 'Produits de haute fraîcheur, préparations faites minute.',
+  spec_card1_title: 'Sushi Signature',
+  spec_card1_text: 'Sélection exclusive de créations artisanales façonnées à la main avec du saumon frais.',
+  spec_card2_title: 'Sashimi Premium',
+  spec_card2_text: 'Tranches de poisson cru minutieusement découpées pour une fraîcheur et texture incomparable.',
+  spec_card3_title: 'Rolls Créatifs',
+  spec_card3_text: 'Associations audacieuses entre haute gastronomie japonaise et saveurs fusion contemporaines.',
+  spec_image: '/images/sushi_bowl.webp',
+};
+
 export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
+  const content = useContentBlocks(SPEC_DEFAULTS);
 
   const goToPlats = (category: string) => {
     onSelectCategory && onSelectCategory(category);
@@ -24,13 +39,13 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
         {/* Header (on Black background) */}
         <Reveal className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-3">
           <span className="text-xs font-bold text-[#FF5A1F] uppercase tracking-widest bg-[#FF5A1F]/10 px-3.5 py-1.5 rounded-full inline-block border border-[#FF5A1F]/20">
-            Menu d&apos;Exception
+            {content.spec_badge}
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Nos Spécialités
+            {content.spec_title}
           </h2>
           <p className="text-base text-gray-400 font-normal">
-            Produits de haute fraîcheur, préparations faites minute.
+            {content.spec_subtitle}
           </p>
         </Reveal>
 
@@ -48,10 +63,10 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
                 <Star className="w-6 h-6 fill-[#FF5A1F]/20 group-hover:fill-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#FF5A1F] transition-colors">
-                Sushi Signature
+                {content.spec_card1_title}
               </h3>
               <p className="text-sm text-gray-600 leading-relaxed font-normal">
-                Sélection exclusive de créations artisanales façonnées à la main avec du saumon frais.
+                {content.spec_card1_text}
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5A1F]">
@@ -72,10 +87,10 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
                 <Gem className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#FF5A1F] transition-colors">
-                Sashimi Premium
+                {content.spec_card2_title}
               </h3>
               <p className="text-sm text-gray-600 leading-relaxed font-normal">
-                Tranches de poisson cru minutieusement découpées pour une fraîcheur et texture incomparable.
+                {content.spec_card2_text}
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5A1F]">
@@ -88,7 +103,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
           {/* Card 3: Image Card (Bol Sushi) */}
           <Reveal delay={0.2} className="relative group rounded-2xl overflow-hidden border border-gray-200 shadow-2xl min-h-[300px] h-full">
             <Image
-              src="/images/sushi_bowl.webp"
+              src={content.spec_image}
               alt="Bol de sushi et sashimi frais"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -108,10 +123,10 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
                 <Palette className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#FF5A1F] transition-colors">
-                Rolls Créatifs
+                {content.spec_card3_title}
               </h3>
               <p className="text-sm text-gray-600 leading-relaxed font-normal">
-                Associations audacieuses entre haute gastronomie japonaise et saveurs fusion contemporaines.
+                {content.spec_card3_text}
               </p>
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5A1F]">
