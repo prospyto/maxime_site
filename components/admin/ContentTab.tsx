@@ -369,14 +369,18 @@ export default function ContentTab() {
     setSaving(key);
     const { error } = await supabase
       .from('content_blocks')
-      .update({ value: blocks[key], updated_at: new Date().toISOString() })
-      .eq('key', key);
+      .upsert(
+        { key, value: blocks[key], updated_at: new Date().toISOString() },
+        { onConflict: 'key' }
+      );
     setSaving(null);
-    if (!error) {
-      setSaved(key);
-      stopEditing(key);
-      setTimeout(() => setSaved(null), 2000);
+    if (error) {
+      alert("Erreur à la sauvegarde : " + error.message);
+      return;
     }
+    setSaved(key);
+    stopEditing(key);
+    setTimeout(() => setSaved(null), 2000);
   };
 
   const handleImageUpload = async (key: string, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -402,12 +406,18 @@ export default function ContentTab() {
 
     setBlocks((prev) => ({ ...prev, [key]: publicUrl }));
 
-    await supabase
+    const { error: dbError } = await supabase
       .from('content_blocks')
-      .update({ value: publicUrl, updated_at: new Date().toISOString() })
-      .eq('key', key);
+      .upsert(
+        { key, value: publicUrl, updated_at: new Date().toISOString() },
+        { onConflict: 'key' }
+      );
 
     setUploading(null);
+    if (dbError) {
+      alert("Erreur à la sauvegarde : " + dbError.message);
+      return;
+    }
     setSaved(key);
     setTimeout(() => setSaved(null), 2000);
   };
