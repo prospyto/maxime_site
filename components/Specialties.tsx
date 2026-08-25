@@ -16,10 +16,13 @@ const SPEC_DEFAULTS = {
   spec_subtitle: 'Produits de haute fraîcheur, préparations faites minute.',
   spec_card1_title: 'Sushi Signature',
   spec_card1_text: 'Sélection exclusive de créations artisanales façonnées à la main avec du saumon frais.',
+  spec_card1_cta: 'Explorer',
   spec_card2_title: 'Sashimi Premium',
   spec_card2_text: 'Tranches de poisson cru minutieusement découpées pour une fraîcheur et texture incomparable.',
+  spec_card2_cta: 'Découvrir',
   spec_card3_title: 'Rolls Créatifs',
   spec_card3_text: 'Associations audacieuses entre haute gastronomie japonaise et saveurs fusion contemporaines.',
+  spec_card3_cta: 'Découvrir',
   spec_image: '/images/sushi_bowl.webp',
 };
 
@@ -71,7 +74,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5A1F]">
               <span className="px-3.5 py-1.5 rounded-full bg-orange-50 group-hover:bg-[#FF5A1F] group-hover:text-white transition-colors">
-                Explorer
+                {content.spec_card1_cta}
               </span>
             </div>
           </Reveal>
@@ -95,7 +98,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5A1F]">
               <span className="px-3.5 py-1.5 rounded-full bg-orange-50 group-hover:bg-[#FF5A1F] group-hover:text-white transition-colors">
-                Découvrir
+                {content.spec_card2_cta}
               </span>
             </div>
           </Reveal>
@@ -131,7 +134,7 @@ export default function Specialties({ onSelectCategory }: SpecialtiesProps) {
             </div>
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-[#FF5A1F]">
               <span className="px-3.5 py-1.5 rounded-full bg-orange-50 group-hover:bg-[#FF5A1F] group-hover:text-white transition-colors">
-                Découvrir
+                {content.spec_card3_cta}
               </span>
             </div>
           </Reveal>

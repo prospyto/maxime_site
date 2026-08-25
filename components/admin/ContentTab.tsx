@@ -21,9 +21,9 @@ const PHILO_KEYS = [
 ];
 const SPEC_KEYS = [
   'spec_badge', 'spec_title', 'spec_subtitle',
-  'spec_card1_title', 'spec_card1_text',
-  'spec_card2_title', 'spec_card2_text',
-  'spec_card3_title', 'spec_card3_text',
+  'spec_card1_title', 'spec_card1_text', 'spec_card1_cta',
+  'spec_card2_title', 'spec_card2_text', 'spec_card2_cta',
+  'spec_card3_title', 'spec_card3_text', 'spec_card3_cta',
   'spec_image',
 ];
 const SHOWCASE_KEYS = [
@@ -64,13 +64,16 @@ const LABELS: Record<string, string> = {
   spec_badge: 'Badge (au-dessus du titre)',
   spec_title: 'Titre de section',
   spec_subtitle: 'Sous-titre de section',
-  spec_card1_title: 'Carte 1 — Titre',
-  spec_card1_text: 'Carte 1 — Texte',
-  spec_card2_title: 'Carte 2 — Titre',
-  spec_card2_text: 'Carte 2 — Texte',
-  spec_card3_title: 'Carte 3 — Titre',
-  spec_card3_text: 'Carte 3 — Texte',
-  spec_image: 'Image (carte du milieu)',
+  spec_card1_title: 'Carte "Sushi Signature" — Titre',
+  spec_card1_text: 'Carte "Sushi Signature" — Texte',
+  spec_card1_cta: 'Carte "Sushi Signature" — Texte du bouton',
+  spec_card2_title: 'Carte "Sashimi Premium" — Titre',
+  spec_card2_text: 'Carte "Sashimi Premium" — Texte',
+  spec_card2_cta: 'Carte "Sashimi Premium" — Texte du bouton',
+  spec_card3_title: 'Carte "Rolls Créatifs" — Titre',
+  spec_card3_text: 'Carte "Rolls Créatifs" — Texte',
+  spec_card3_cta: 'Carte "Rolls Créatifs" — Texte du bouton',
+  spec_image: 'Image (3e position, entre Sashimi et Rolls, sans texte)',
   showcase_plats_title: 'Titre — onglet "Nos Plats"',
   showcase_plats_subtitle: 'Sous-titre — onglet "Nos Plats"',
   showcase_populaire_badge: 'Badge — onglet "Menu Populaire"',
@@ -455,16 +458,19 @@ export default function ContentTab() {
         {renderImageField('philo_image2')}
       </SectionCard>
 
-      <SectionCard zone="specialites" title="Section Spécialités" description="Badge, titre, sous-titre, les 3 cartes catégories et l'image du menu.">
+      <SectionCard zone="specialites" title="Section Spécialités" description="Badge, titre, sous-titre, les 3 cartes catégories (+ leur bouton) et l'image du menu.">
         {renderTextField('spec_badge')}
         {renderTextField('spec_title')}
         {renderTextField('spec_subtitle')}
         {renderTextField('spec_card1_title')}
         {renderTextField('spec_card1_text')}
+        {renderTextField('spec_card1_cta')}
         {renderTextField('spec_card2_title')}
         {renderTextField('spec_card2_text')}
+        {renderTextField('spec_card2_cta')}
         {renderTextField('spec_card3_title')}
         {renderTextField('spec_card3_text')}
+        {renderTextField('spec_card3_cta')}
         {renderImageField('spec_image')}
       </SectionCard>
 
@@ -509,7 +515,11 @@ export default function ContentTab() {
         {renderTextField('contact_feature5_text')}
       </SectionCard>
 
-      <SectionCard zone="commander" title="Section Commander" description='Badge, titre, sous-titre et image de fond de la section "Commandez Votre Expérience Sushi".'>
+      <SectionCard
+        zone="commander"
+        title='Section "Commander" (bandeau "Service Sur-Mesure")'
+        description='Badge, titre, sous-titre et image de fond de la section qui affiche "Commandez Votre Expérience Sushi" sur le site.'
+      >
         {renderTextField('order_badge')}
         {renderTextField('order_title_line1')}
         {renderTextField('order_title_highlight')}
