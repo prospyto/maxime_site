@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Image as ImageIcon, Type, Save, Check, Loader2, Pencil } from 'lucide-react';
+import { Image as ImageIcon, Type, Save, Check, Loader2, Pencil, Flame, Leaf, Star, UtensilsCrossed, MapPin, ShoppingBag, Share2, FileText } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import DishesTab from '@/components/admin/DishesTab';
 import ReviewsTab from '@/components/admin/ReviewsTab';
@@ -248,6 +248,70 @@ function ImageField({
   );
 }
 
+const ZONES = {
+  accueil: { color: '#FF5A1F', icon: Flame, label: 'Accueil' },
+  philosophie: { color: '#22C55E', icon: Leaf, label: 'Philosophie' },
+  specialites: { color: '#EAB308', icon: Star, label: 'Spécialités' },
+  vitrine: { color: '#F97316', icon: UtensilsCrossed, label: 'Vitrine des Plats' },
+  contact: { color: '#38BDF8', icon: MapPin, label: 'Contact' },
+  commander: { color: '#EC4899', icon: ShoppingBag, label: 'Commander' },
+  social: { color: '#A78BFA', icon: Share2, label: 'Réseaux Sociaux' },
+  forms: { color: '#94A3B8', icon: FileText, label: 'Formulaires' },
+} as const;
+
+type ZoneKey = keyof typeof ZONES;
+
+function SectionCard({
+  zone,
+  title,
+  description,
+  children,
+}: {
+  zone: ZoneKey;
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  const { color, icon: Icon } = ZONES[zone];
+  return (
+    <div
+      className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden"
+      style={{ borderLeft: `3px solid ${color}` }}
+    >
+      <div className="px-6 py-4 border-b border-white/8 flex items-center gap-3">
+        <div
+          className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+          style={{ backgroundColor: `${color}1A` }}
+        >
+          <Icon className="w-[18px] h-[18px]" style={{ color }} />
+        </div>
+        <div>
+          <h2 className="font-bold text-white">{title}</h2>
+          <p className="text-xs text-gray-500 mt-0.5">{description}</p>
+        </div>
+      </div>
+      <div className="p-6 space-y-6">{children}</div>
+    </div>
+  );
+}
+
+function ZoneLabel({ zone, label }: { zone: ZoneKey; label: string }) {
+  const { color, icon: Icon } = ZONES[zone];
+  return (
+    <div className="flex items-center gap-2.5 px-1">
+      <div
+        className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+        style={{ backgroundColor: `${color}1A` }}
+      >
+        <Icon className="w-3.5 h-3.5" style={{ color }} />
+      </div>
+      <span className="text-xs font-bold uppercase tracking-wider" style={{ color }}>
+        {label}
+      </span>
+    </div>
+  );
+}
+
 export default function ContentTab() {
   const [blocks, setBlocks] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState<string | null>(null);
@@ -372,174 +436,98 @@ export default function ContentTab() {
 
   return (
     <div className="space-y-6">
-      {/* Section Hero */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">Section Accueil (Hero)</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Modifie le texte et l&apos;image affichés en haut du site.
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('hero_title_line1')}
-          {renderTextField('hero_title_highlight')}
-          {renderTextField('hero_subtitle')}
-          {renderImageField('hero_image')}
-        </div>
-      </div>
+      <SectionCard zone="accueil" title="Section Accueil (Hero)" description="Modifie le texte et l'image affichés en haut du site.">
+        {renderTextField('hero_title_line1')}
+        {renderTextField('hero_title_highlight')}
+        {renderTextField('hero_subtitle')}
+        {renderImageField('hero_image')}
+      </SectionCard>
 
-      {/* Section Philosophie */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">Section Philosophie</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Titre, sous-titre, les deux cartes et les deux images de la section.
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('philo_badge')}
-          {renderTextField('philo_title')}
-          {renderTextField('philo_subtitle')}
-          {renderTextField('philo_card1_title')}
-          {renderTextField('philo_card1_text')}
-          {renderTextField('philo_card2_title')}
-          {renderTextField('philo_card2_text')}
-          {renderImageField('philo_image1')}
-          {renderImageField('philo_image2')}
-        </div>
-      </div>
+      <SectionCard zone="philosophie" title="Section Philosophie" description="Titre, sous-titre, les deux cartes et les deux images de la section.">
+        {renderTextField('philo_badge')}
+        {renderTextField('philo_title')}
+        {renderTextField('philo_subtitle')}
+        {renderTextField('philo_card1_title')}
+        {renderTextField('philo_card1_text')}
+        {renderTextField('philo_card2_title')}
+        {renderTextField('philo_card2_text')}
+        {renderImageField('philo_image1')}
+        {renderImageField('philo_image2')}
+      </SectionCard>
 
-      {/* Section Spécialités */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">Section Spécialités</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Badge, titre, sous-titre, les 3 cartes catégories et l&apos;image du menu.
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('spec_badge')}
-          {renderTextField('spec_title')}
-          {renderTextField('spec_subtitle')}
-          {renderTextField('spec_card1_title')}
-          {renderTextField('spec_card1_text')}
-          {renderTextField('spec_card2_title')}
-          {renderTextField('spec_card2_text')}
-          {renderTextField('spec_card3_title')}
-          {renderTextField('spec_card3_text')}
-          {renderImageField('spec_image')}
-        </div>
-      </div>
+      <SectionCard zone="specialites" title="Section Spécialités" description="Badge, titre, sous-titre, les 3 cartes catégories et l'image du menu.">
+        {renderTextField('spec_badge')}
+        {renderTextField('spec_title')}
+        {renderTextField('spec_subtitle')}
+        {renderTextField('spec_card1_title')}
+        {renderTextField('spec_card1_text')}
+        {renderTextField('spec_card2_title')}
+        {renderTextField('spec_card2_text')}
+        {renderTextField('spec_card3_title')}
+        {renderTextField('spec_card3_text')}
+        {renderImageField('spec_image')}
+      </SectionCard>
 
-      {/* Section En-têtes "Nos Plats" / "Menu Populaire" */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">En-têtes &quot;Nos Plats&quot; &amp; &quot;Menu Populaire&quot;</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Titres et sous-titres affichés au-dessus de la grille de plats et de la liste populaire.
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('showcase_plats_title')}
-          {renderTextField('showcase_plats_subtitle')}
-          {renderTextField('showcase_populaire_badge')}
-          {renderTextField('showcase_populaire_title')}
-          {renderTextField('showcase_populaire_subtitle')}
-        </div>
-      </div>
+      <SectionCard
+        zone="vitrine"
+        title='En-têtes "Nos Plats" & "Menu Populaire"'
+        description="Titres et sous-titres affichés au-dessus de la grille de plats et de la liste populaire."
+      >
+        {renderTextField('showcase_plats_title')}
+        {renderTextField('showcase_plats_subtitle')}
+        {renderTextField('showcase_populaire_badge')}
+        {renderTextField('showcase_populaire_title')}
+        {renderTextField('showcase_populaire_subtitle')}
+      </SectionCard>
 
-      {/* Section Plats */}
+      <ZoneLabel zone="vitrine" label="Vitrine des Plats — Liste des plats" />
       <DishesTab />
 
-      {/* Section Avis Clients */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">En-tête &quot;Avis Clients&quot;</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Badge, titre et sous-titre affichés au-dessus des témoignages.
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('showcase_avis_badge')}
-          {renderTextField('showcase_avis_title')}
-          {renderTextField('showcase_avis_subtitle')}
-        </div>
-      </div>
+      <SectionCard zone="vitrine" title='En-tête "Avis Clients"' description="Badge, titre et sous-titre affichés au-dessus des témoignages.">
+        {renderTextField('showcase_avis_badge')}
+        {renderTextField('showcase_avis_title')}
+        {renderTextField('showcase_avis_subtitle')}
+      </SectionCard>
 
+      <ZoneLabel zone="vitrine" label="Vitrine des Plats — Avis clients" />
       <ReviewsTab />
 
-      {/* Section Contact */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">Section Contact</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Badge, titre, sous-titre, photo et les 5 informations pratiques (adresse, livraison…).
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('contact_badge')}
-          {renderTextField('contact_title')}
-          {renderTextField('contact_subtitle')}
-          {renderImageField('contact_image')}
-          {renderTextField('contact_feature1_label')}
-          {renderTextField('contact_feature1_text')}
-          {renderTextField('contact_feature2_label')}
-          {renderTextField('contact_feature2_text')}
-          {renderTextField('contact_feature3_label')}
-          {renderTextField('contact_feature3_text')}
-          {renderTextField('contact_feature4_label')}
-          {renderTextField('contact_feature4_text')}
-          {renderTextField('contact_feature5_label')}
-          {renderTextField('contact_feature5_text')}
-        </div>
-      </div>
+      <SectionCard zone="contact" title="Section Contact" description="Badge, titre, sous-titre, photo et les 5 informations pratiques (adresse, livraison…).">
+        {renderTextField('contact_badge')}
+        {renderTextField('contact_title')}
+        {renderTextField('contact_subtitle')}
+        {renderImageField('contact_image')}
+        {renderTextField('contact_feature1_label')}
+        {renderTextField('contact_feature1_text')}
+        {renderTextField('contact_feature2_label')}
+        {renderTextField('contact_feature2_text')}
+        {renderTextField('contact_feature3_label')}
+        {renderTextField('contact_feature3_text')}
+        {renderTextField('contact_feature4_label')}
+        {renderTextField('contact_feature4_text')}
+        {renderTextField('contact_feature5_label')}
+        {renderTextField('contact_feature5_text')}
+      </SectionCard>
 
-      {/* Section Commander */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">Section Commander</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Badge, titre, sous-titre et image de fond de la section &quot;Commandez Votre Expérience Sushi&quot;.
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('order_badge')}
-          {renderTextField('order_title_line1')}
-          {renderTextField('order_title_highlight')}
-          {renderTextField('order_subtitle')}
-          {renderImageField('order_image')}
-        </div>
-      </div>
+      <SectionCard zone="commander" title="Section Commander" description='Badge, titre, sous-titre et image de fond de la section "Commandez Votre Expérience Sushi".'>
+        {renderTextField('order_badge')}
+        {renderTextField('order_title_line1')}
+        {renderTextField('order_title_highlight')}
+        {renderTextField('order_subtitle')}
+        {renderImageField('order_image')}
+      </SectionCard>
 
-      {/* Section Réseaux sociaux */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">Réseaux sociaux</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Liens des icônes affichées en bas de page (pied de page).
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('social_instagram_url')}
-          {renderTextField('social_facebook_url')}
-          {renderTextField('social_twitter_url')}
-        </div>
-      </div>
+      <SectionCard zone="social" title="Réseaux sociaux" description="Liens des icônes affichées en bas de page (pied de page).">
+        {renderTextField('social_instagram_url')}
+        {renderTextField('social_facebook_url')}
+        {renderTextField('social_twitter_url')}
+      </SectionCard>
 
-      {/* Section Formulaires */}
-      <div className="bg-[#141414] border border-white/8 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-white/8">
-          <h2 className="font-bold text-white">Formulaires</h2>
-          <p className="text-xs text-gray-500 mt-1">
-            Titres affichés en haut des formulaires de réservation et de commande.
-          </p>
-        </div>
-        <div className="p-6 space-y-6">
-          {renderTextField('form_reservation_title')}
-          {renderTextField('form_reservation_subtitle')}
-          {renderTextField('form_commande_title')}
-        </div>
-      </div>
+      <SectionCard zone="forms" title="Formulaires" description="Titres affichés en haut des formulaires de réservation et de commande.">
+        {renderTextField('form_reservation_title')}
+        {renderTextField('form_reservation_subtitle')}
+        {renderTextField('form_commande_title')}
+      </SectionCard>
 
       <p className="text-xs text-gray-600">
         D&apos;autres ajustements pourront être ajoutés ici progressivement.
