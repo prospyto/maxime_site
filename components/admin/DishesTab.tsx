@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Plus, Trash2, Loader2, Check, Save, ImageIcon, Star, X } from 'lucide-react';
+import { Plus, Trash2, Loader2, Save, ImageIcon, Star, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 interface DishRow {
@@ -61,12 +61,27 @@ export default function DishesTab() {
   }, []);
 
   useEffect(() => {
-    load();
+    let ignore = false;
+    async function init() {
+      const { data } = await supabase
+        .from('dishes')
+        .select('*')
+        .order('display_order', { ascending: true });
+      if (!ignore) {
+        if (data) setDishes(data as DishRow[]);
+        setLoading(false);
+      }
+    }
+    init();
+
     const channel = supabase
       .channel('admin-dishes-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'dishes' }, load)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'dishes' }, () => {
+        load();
+      })
       .subscribe();
     return () => {
+      ignore = true;
       supabase.removeChannel(channel);
     };
   }, [load]);

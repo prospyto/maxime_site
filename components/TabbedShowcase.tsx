@@ -37,14 +37,16 @@ export default function TabbedShowcase({
   forcedTab,
 }: TabbedShowcaseProps) {
   const [activeTab, setActiveTab] = useState<'plats-signature' | 'menu-populaire' | 'avis-clients'>('menu-populaire');
+  const [prevForcedTab, setPrevForcedTab] = useState(forcedTab);
   const { dishes } = useDishes();
   const { reviews: customerReviews } = useReviews();
   const content = useContentBlocks(SHOWCASE_DEFAULTS);
 
-  // Quand forcedTab change depuis le parent, on bascule l'onglet
-  React.useEffect(() => {
-    if (forcedTab) setActiveTab(forcedTab);
-  }, [forcedTab]);
+  // Quand forcedTab change depuis le parent, on ajuste l'état
+  if (forcedTab && forcedTab !== prevForcedTab) {
+    setPrevForcedTab(forcedTab);
+    setActiveTab(forcedTab);
+  }
 
   return (
     <div id="nos-plats" className="relative bg-[#F8F9FA] text-gray-900 pb-20">

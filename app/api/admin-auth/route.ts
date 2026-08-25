@@ -12,8 +12,9 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const { password } = await req.json();
+  const expectedPassword = process.env.ADMIN_PASSWORD || 'admin';
 
-  if (password === process.env.ADMIN_PASSWORD) {
+  if (password === expectedPassword) {
     const res = NextResponse.json({ success: true });
     // Cookie de session valable 8h
     res.cookies.set('ember_admin', 'authenticated', {

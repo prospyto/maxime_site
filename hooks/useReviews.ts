@@ -85,14 +85,31 @@ export function useReviews() {
   }, []);
 
   useEffect(() => {
-    load();
+    let ignore = false;
+    async function init() {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .order('display_order', { ascending: true });
+
+      if (!ignore) {
+        if (!error && data && data.length > 0) {
+          setReviews((data as ReviewRow[]).map(rowToReview));
+        }
+        setLoading(false);
+      }
+    }
+    init();
 
     const channel = supabase
       .channel('reviews-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, load)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => {
+        load();
+      })
       .subscribe();
 
     return () => {
+      ignore = true;
       supabase.removeChannel(channel);
     };
   }, [load]);

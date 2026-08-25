@@ -190,18 +190,27 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     setLastRefresh(new Date().toLocaleTimeString('fr-FR'));
   }, []);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
-
-  // Temps réel : rafraîchit automatiquement dès qu'une réservation ou
-  // commande est ajoutée dans Supabase, sans action manuelle.
   useEffect(() => {
+    let ignore = false;
+    async function init() {
+      await fetchData();
+    }
+    init();
+
     const channel = supabase
       .channel('admin-live-updates')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'reservations' }, () => fetchData())
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'commandes' }, () => fetchData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'reservations' }, () => {
+        if (!ignore) fetchData();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'commandes' }, () => {
+        if (!ignore) fetchData();
+      })
       .subscribe();
 
-    return () => { supabase.removeChannel(channel); };
+    return () => {
+      ignore = true;
+      supabase.removeChannel(channel);
+    };
   }, [fetchData]);
 
   const handleLogout = async () => {
@@ -531,11 +540,29 @@ export default function AdminPage() {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    // Vérifie si une session est déjà active
-    fetch('/api/admin-auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: '' }) })
-      .then(() => {})
-      .catch(() => {});
-    setChecking(false);
+    let ignore = false;
+    async function checkSession() {
+      try {
+        const res = await fetch('/api/admin-auth', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: '' }),
+        });
+        if (res.ok && !ignore) {
+          setAuthenticated(true);
+        }
+      } catch {
+        // pas de session active
+      } finally {
+        if (!ignore) {
+          setChecking(false);
+        }
+      }
+    }
+    checkSession();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   if (checking) {

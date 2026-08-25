@@ -54,14 +54,31 @@ export function useDishes() {
   }, []);
 
   useEffect(() => {
-    load();
+    let ignore = false;
+    async function init() {
+      const { data, error } = await supabase
+        .from('dishes')
+        .select('*')
+        .order('display_order', { ascending: true });
+
+      if (!ignore) {
+        if (!error && data && data.length > 0) {
+          setDishes((data as DishRow[]).map(rowToDish));
+        }
+        setLoading(false);
+      }
+    }
+    init();
 
     const channel = supabase
       .channel('dishes-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'dishes' }, load)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'dishes' }, () => {
+        load();
+      })
       .subscribe();
 
     return () => {
+      ignore = true;
       supabase.removeChannel(channel);
     };
   }, [load]);

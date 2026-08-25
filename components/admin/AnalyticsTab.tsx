@@ -99,21 +99,32 @@ export default function AnalyticsTab() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { fetchAnalytics(); }, [fetchAnalytics]);
-
-  // Rafraîchit en direct dès qu'une nouvelle visite/commande/réservation arrive
   useEffect(() => {
+    let ignore = false;
+    async function init() {
+      await fetchAnalytics();
+    }
+    init();
+
     const channel = supabase
       .channel('analytics-live')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'page_views' }, () => fetchAnalytics())
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'commandes' }, () => fetchAnalytics())
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reservations' }, () => fetchAnalytics())
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'page_views' }, () => {
+        if (!ignore) fetchAnalytics();
+      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'commandes' }, () => {
+        if (!ignore) fetchAnalytics();
+      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reservations' }, () => {
+        if (!ignore) fetchAnalytics();
+      })
       .subscribe();
 
-    // Recalcule aussi le compteur "5 dernières minutes" régulièrement
-    const interval = setInterval(fetchAnalytics, 30000);
+    const interval = setInterval(() => {
+      if (!ignore) fetchAnalytics();
+    }, 30000);
 
     return () => {
+      ignore = true;
       supabase.removeChannel(channel);
       clearInterval(interval);
     };
@@ -147,7 +158,7 @@ export default function AnalyticsTab() {
             <Eye className="w-5 h-5 text-blue-400" />
           </div>
           <p className="text-3xl font-extrabold text-white mb-1">{data.totalVisitsToday}</p>
-          <p className="text-sm font-semibold text-gray-400">Visites aujourd'hui</p>
+          <p className="text-sm font-semibold text-gray-400">Visites aujourd&apos;hui</p>
         </div>
 
         <div className="bg-[#141414] border border-white/8 rounded-2xl p-6">
