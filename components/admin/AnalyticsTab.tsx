@@ -261,10 +261,6 @@ export default function AnalyticsTab() {
           </ResponsiveContainer>
         </div>
       </div>
-
-      <p className="text-xs text-gray-600">
-        Suivi maison basé sur les visites enregistrées côté site (hors pages admin). Google Analytics reste actif en parallèle pour des rapports plus détaillés.
-      </p>
     </div>
   );
 }
