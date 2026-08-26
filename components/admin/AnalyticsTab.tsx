@@ -29,7 +29,12 @@ interface AnalyticsData {
 }
 
 function frDate(d: Date) {
-  return d.toISOString().slice(0, 10);
+  // Utilise la date calendaire locale (et non toISOString/UTC) pour que les
+  // clés du graphique correspondent bien aux visites du jour en heure locale.
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 export default function AnalyticsTab() {
