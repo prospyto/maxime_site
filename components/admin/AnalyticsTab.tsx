@@ -18,14 +18,22 @@ interface DayCount {
   visites: number;
 }
 
+type Period = '7d' | '30d' | '12m';
+
+const PERIOD_LABELS: Record<Period, string> = {
+  '7d': '7 derniers jours',
+  '30d': '30 derniers jours',
+  '12m': '12 derniers mois',
+};
+
 interface AnalyticsData {
-  totalVisitsAllTime: number;
+  totalVisitsPeriod: number;
   totalVisitsToday: number;
   liveVisitorsLast5Min: number;
   totalCommandes: number;
   totalReservations: number;
   conversionRate: number;
-  last7Days: DayCount[];
+  chartData: DayCount[];
 }
 
 function frDate(d: Date) {
@@ -37,66 +45,99 @@ function frDate(d: Date) {
   return `${y}-${m}-${day}`;
 }
 
+function monthKey(d: Date) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  return `${y}-${m}`;
+}
+
+function monthLabel(key: string) {
+  const [y, m] = key.split('-').map(Number);
+  const d = new Date(y, m - 1, 1);
+  return d.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' });
+}
+
 export default function AnalyticsTab() {
+  const [period, setPeriod] = useState<Period>('7d');
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchAnalytics = useCallback(async () => {
+  const fetchAnalytics = useCallback(async (currentPeriod: Period) => {
     try {
       const now = new Date();
-      const sevenDaysAgo = new Date(now);
-      sevenDaysAgo.setDate(now.getDate() - 6);
-      sevenDaysAgo.setHours(0, 0, 0, 0);
+
+      // Borne de début de la période, et granularité d'agrégation (jour ou mois)
+      const rangeStart = new Date(now);
+      if (currentPeriod === '7d') {
+        rangeStart.setDate(now.getDate() - 6);
+        rangeStart.setHours(0, 0, 0, 0);
+      } else if (currentPeriod === '30d') {
+        rangeStart.setDate(now.getDate() - 29);
+        rangeStart.setHours(0, 0, 0, 0);
+      } else {
+        rangeStart.setMonth(now.getMonth() - 11);
+        rangeStart.setDate(1);
+        rangeStart.setHours(0, 0, 0, 0);
+      }
 
       const fiveMinAgo = new Date(now.getTime() - 5 * 60 * 1000);
       const todayStart = new Date(now);
       todayStart.setHours(0, 0, 0, 0);
 
       const [viewsRes, commandesRes, reservationsRes] = await Promise.all([
-        supabase.from('page_views').select('created_at').gte('created_at', sevenDaysAgo.toISOString()),
+        supabase.from('page_views').select('created_at').gte('created_at', rangeStart.toISOString()),
         supabase.from('commandes').select('id', { count: 'exact', head: true }),
         supabase.from('reservations').select('id', { count: 'exact', head: true }),
       ]);
 
       const views = viewsRes.data || [];
 
-      // Regroupement par jour sur les 7 derniers jours
-      const byDay = new Map<string, number>();
-      for (let i = 0; i < 7; i++) {
-        const d = new Date(sevenDaysAgo);
-        d.setDate(sevenDaysAgo.getDate() + i);
-        byDay.set(frDate(d), 0);
+      // Regroupement par jour (7j/30j) ou par mois (12m)
+      const bucket = new Map<string, number>();
+      if (currentPeriod === '12m') {
+        for (let i = 0; i < 12; i++) {
+          const d = new Date(rangeStart.getFullYear(), rangeStart.getMonth() + i, 1);
+          bucket.set(monthKey(d), 0);
+        }
+      } else {
+        const days = currentPeriod === '7d' ? 7 : 30;
+        for (let i = 0; i < days; i++) {
+          const d = new Date(rangeStart);
+          d.setDate(rangeStart.getDate() + i);
+          bucket.set(frDate(d), 0);
+        }
       }
+
       let totalToday = 0;
       let liveCount = 0;
       for (const v of views) {
         const created = new Date(v.created_at);
-        const key = frDate(created);
-        if (byDay.has(key)) byDay.set(key, (byDay.get(key) || 0) + 1);
+        const key = currentPeriod === '12m' ? monthKey(created) : frDate(created);
+        if (bucket.has(key)) bucket.set(key, (bucket.get(key) || 0) + 1);
         if (created >= todayStart) totalToday++;
         if (created >= fiveMinAgo) liveCount++;
       }
 
-      const last7Days: DayCount[] = Array.from(byDay.entries()).map(([date, visites]) => ({
-        date: date.slice(5), // MM-DD
+      const chartData: DayCount[] = Array.from(bucket.entries()).map(([key, visites]) => ({
+        date: currentPeriod === '12m' ? monthLabel(key) : key.slice(5), // MM-DD ou "janv. 26"
         visites,
       }));
 
       const totalCommandes = commandesRes.count || 0;
       const totalReservations = reservationsRes.count || 0;
       const totalConversions = totalCommandes + totalReservations;
-      const totalVisitsAllTimeApprox = views.length; // sur 7 jours, approximation légère
+      const totalVisitsPeriod = views.length;
 
       setData({
-        totalVisitsAllTime: totalVisitsAllTimeApprox,
+        totalVisitsPeriod,
         totalVisitsToday: totalToday,
         liveVisitorsLast5Min: liveCount,
         totalCommandes,
         totalReservations,
-        conversionRate: totalVisitsAllTimeApprox > 0
-          ? (totalConversions / totalVisitsAllTimeApprox) * 100
+        conversionRate: totalVisitsPeriod > 0
+          ? (totalConversions / totalVisitsPeriod) * 100
           : 0,
-        last7Days,
+        chartData,
       });
     } catch (err) {
       console.error('[AnalyticsTab] Erreur:', err);
@@ -106,26 +147,27 @@ export default function AnalyticsTab() {
 
   useEffect(() => {
     let ignore = false;
+    setLoading(true);
     async function init() {
-      await fetchAnalytics();
+      await fetchAnalytics(period);
     }
     init();
 
     const channel = supabase
       .channel('analytics-live')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'page_views' }, () => {
-        if (!ignore) fetchAnalytics();
+        if (!ignore) fetchAnalytics(period);
       })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'commandes' }, () => {
-        if (!ignore) fetchAnalytics();
+        if (!ignore) fetchAnalytics(period);
       })
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'reservations' }, () => {
-        if (!ignore) fetchAnalytics();
+        if (!ignore) fetchAnalytics(period);
       })
       .subscribe();
 
     const interval = setInterval(() => {
-      if (!ignore) fetchAnalytics();
+      if (!ignore) fetchAnalytics(period);
     }, 30000);
 
     return () => {
@@ -133,7 +175,7 @@ export default function AnalyticsTab() {
       supabase.removeChannel(channel);
       clearInterval(interval);
     };
-  }, [fetchAnalytics]);
+  }, [fetchAnalytics, period]);
 
   if (loading || !data) {
     return (
@@ -172,24 +214,41 @@ export default function AnalyticsTab() {
           </div>
           <p className="text-3xl font-extrabold text-white mb-1">{data.conversionRate.toFixed(1)}%</p>
           <p className="text-sm font-semibold text-gray-400">Taux de conversion</p>
-          <p className="text-xs text-gray-600 mt-1">sur les 7 derniers jours</p>
+          <p className="text-xs text-gray-600 mt-1">sur {PERIOD_LABELS[period]}</p>
         </div>
 
         <div className="bg-[#141414] border border-white/8 rounded-2xl p-6">
           <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center mb-4">
             <Eye className="w-5 h-5 text-purple-400" />
           </div>
-          <p className="text-3xl font-extrabold text-white mb-1">{data.totalVisitsAllTime}</p>
-          <p className="text-sm font-semibold text-gray-400">Visites (7 jours)</p>
+          <p className="text-3xl font-extrabold text-white mb-1">{data.totalVisitsPeriod}</p>
+          <p className="text-sm font-semibold text-gray-400">Visites ({PERIOD_LABELS[period]})</p>
         </div>
       </div>
 
       {/* Courbe */}
       <div className="bg-[#141414] border border-white/8 rounded-2xl p-6">
-        <h3 className="text-white font-bold mb-4">Visites — 7 derniers jours</h3>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+          <h3 className="text-white font-bold">Visites — {PERIOD_LABELS[period]}</h3>
+          <div className="inline-flex bg-[#0D0D0D] border border-white/8 rounded-xl p-1 self-start">
+            {(Object.keys(PERIOD_LABELS) as Period[]).map((p) => (
+              <button
+                key={p}
+                onClick={() => setPeriod(p)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                  period === p
+                    ? 'bg-[#FF5A1F] text-white'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                {p === '7d' ? '7 jours' : p === '30d' ? '30 jours' : '12 mois'}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data.last7Days}>
+            <LineChart data={data.chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" />
               <XAxis dataKey="date" stroke="#666" fontSize={12} />
               <YAxis stroke="#666" fontSize={12} allowDecimals={false} />
